@@ -3,66 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📔 Markdown 日记</title>
+    <title>📔 Markdown 日记 · 彩色版</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
     </script>
     <style>
         :root {
-            --bg: #fafbfc;
+            /* 明亮扁平色彩 */
+            --bg: #f0f4f8;
             --surface: #ffffff;
-            --surface-alt: #f6f8fa;
-            --border: #d0d7de;
-            --border-light: #e8ecf0;
-            --text: #1f2328;
-            --text-secondary: #656d76;
-            --text-muted: #8b949e;
-            --accent: #0969da;
-            --accent-hover: #0550ae;
-            --danger: #cf222e;
-            --danger-hover: #a40e26;
-            --shadow: 0 1px 3px rgba(31, 35, 40, 0.08), 0 1px 2px rgba(31, 35, 40, 0.06);
-            --shadow-lg: 0 8px 24px rgba(31, 35, 40, 0.12);
-            --radius: 8px;
-            --radius-sm: 6px;
-            --radius-xs: 4px;
-            --transition: 0.15s ease;
-            --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', 'PingFang SC', 'Microsoft YaHei',
-                sans-serif;
+            --surface-alt: #f8fafc;
+            --surface-hover: #eef2f6;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent: #4f46e5;
+            --accent-light: #e0e7ff;
+            --accent-hover: #4338ca;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-xs: 6px;
+            --transition: 0.2s ease;
+            --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', 'PingFang SC',
+                'Microsoft YaHei', sans-serif;
 
-            /* 热力图颜色 */
-            --heat-empty: #ebedf0;
-            --heat-l1: #9be9a8;
-            --heat-l2: #40c463;
-            --heat-l3: #30a14e;
-            --heat-l4: #216e39;
-            --heat-empty-dark: #1e2a3a;
-            --heat-l1-dark: #0e4429;
-            --heat-l2-dark: #006d32;
-            --heat-l3-dark: #26a641;
-            --heat-l4-dark: #39d353;
+            /* 热力图颜色 (优化对比度) */
+            --heat-empty: #edf2f7;
+            --heat-l1: #c6f6d5;
+            --heat-l2: #68d391;
+            --heat-l3: #38a169;
+            --heat-l4: #22543d;
         }
 
         .dark {
-            --bg: #0d1117;
-            --surface: #161b22;
-            --surface-alt: #1c2128;
-            --border: #30363d;
-            --border-light: #21262d;
-            --text: #e6edf3;
-            --text-secondary: #8b949e;
-            --text-muted: #6e7681;
-            --accent: #58a6ff;
-            --accent-hover: #79b8ff;
-            --danger: #f85149;
-            --danger-hover: #da3633;
-            --shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
-            --heat-empty: #1e2a3a;
-            --heat-l1: #0e4429;
-            --heat-l2: #006d32;
-            --heat-l3: #26a641;
-            --heat-l4: #39d353;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-alt: #334155;
+            --surface-hover: #475569;
+            --border: #475569;
+            --border-light: #334155;
+            --text: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent: #818cf8;
+            --accent-light: #312e81;
+            --accent-hover: #6366f1;
+            --danger: #f87171;
+            --danger-hover: #ef4444;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.5);
+            --heat-empty: #1e293b;
+            --heat-l1: #064e3b;
+            --heat-l2: #047857;
+            --heat-l3: #10b981;
+            --heat-l4: #6ee7b7;
         }
 
         * {
@@ -82,6 +88,7 @@
             transition: background var(--transition), color var(--transition);
             user-select: none;
             -webkit-user-select: none;
+            letter-spacing: -0.01em;
         }
 
         /* ========== 顶部工具栏 ========== */
@@ -89,76 +96,88 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 20px;
+            padding: 10px 24px;
             background: var(--surface);
             border-bottom: 1px solid var(--border);
             flex-shrink: 0;
             z-index: 10;
-            box-shadow: var(--shadow);
-            min-height: 52px;
+            box-shadow: var(--shadow-sm);
+            min-height: 56px;
             flex-wrap: wrap;
+            transition: background var(--transition);
         }
         .toolbar .logo {
-            font-size: 1.3em;
+            font-size: 1.25rem;
             font-weight: 700;
             letter-spacing: -0.3px;
-            white-space: nowrap;
-            color: var(--text);
+            color: var(--accent);
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
+            white-space: nowrap;
         }
         .toolbar .logo svg {
-            width: 24px;
-            height: 24px;
-            flex-shrink: 0;
+            width: 26px;
+            height: 26px;
+            stroke: var(--accent);
         }
         .btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 7px 14px;
+            padding: 7px 16px;
             font-size: 0.875rem;
             font-weight: 500;
             font-family: var(--font-sans);
             border-radius: var(--radius-sm);
             cursor: pointer;
-            border: 1px solid var(--border);
-            background: var(--surface);
+            border: none;
+            background: var(--surface-alt);
             color: var(--text);
             transition: all var(--transition);
             white-space: nowrap;
             text-decoration: none;
-            position: relative;
+            box-shadow: var(--shadow-sm);
+            letter-spacing: -0.01em;
         }
         .btn:hover {
-            background: var(--surface-alt);
-            border-color: var(--text-muted);
+            background: var(--surface-hover);
+            box-shadow: var(--shadow);
+            transform: translateY(-1px);
         }
         .btn:active {
-            transform: scale(0.97);
-            transition: transform 0.08s ease;
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.05s ease;
         }
         .btn-primary {
             background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
+            color: #ffffff;
             font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
         }
         .btn-primary:hover {
             background: var(--accent-hover);
-            border-color: var(--accent-hover);
+            box-shadow: 0 6px 12px -2px rgba(79, 70, 229, 0.35);
             color: #fff;
         }
         .btn-icon {
             padding: 7px 10px;
             min-width: 36px;
             justify-content: center;
+            background: transparent;
+            box-shadow: none;
+            border-radius: var(--radius-xs);
+        }
+        .btn-icon:hover {
+            background: var(--surface-alt);
+            box-shadow: none;
         }
         .btn-sm {
             padding: 4px 10px;
             font-size: 0.8rem;
             gap: 4px;
+            border-radius: var(--radius-xs);
         }
         .folder-path {
             flex: 1;
@@ -168,16 +187,58 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            padding: 6px 10px;
+            padding: 6px 12px;
             background: var(--surface-alt);
             border-radius: var(--radius-xs);
-            border: 1px solid var(--border-light);
-            cursor: default;
-            max-width: 400px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            max-width: 360px;
+            transition: border-color var(--transition);
+        }
+        .folder-path:hover {
+            border-color: var(--accent);
         }
         .toolbar .spacer {
             flex: 1;
             min-width: 8px;
+        }
+
+        /* ========== 恢复提示条 ========== */
+        .recovery-banner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 24px;
+            background: #fff7ed;
+            border-bottom: 1px solid #fed7aa;
+            color: #9a3412;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+            animation: slideDown 0.3s ease;
+        }
+        .recovery-banner.hidden {
+            display: none;
+        }
+        .recovery-banner .btn {
+            background: #ffedd5;
+            color: #9a3412;
+            border: 1px solid #fdba74;
+            box-shadow: none;
+            font-size: 0.8rem;
+            padding: 4px 12px;
+        }
+        .recovery-banner .btn:hover {
+            background: #fed7aa;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* ========== 主内容区 ========== */
@@ -191,7 +252,7 @@
 
         /* ========== 热力图容器 ========== */
         .heatmap-container {
-            padding: 16px 20px 12px 20px;
+            padding: 16px 24px 12px 24px;
             background: var(--surface);
             border-bottom: 1px solid var(--border);
             flex-shrink: 0;
@@ -199,6 +260,7 @@
             flex-direction: column;
             align-items: center;
             gap: 6px;
+            transition: background var(--transition);
         }
         .heatmap-wrapper {
             display: flex;
@@ -255,16 +317,16 @@
         .heatmap-cell {
             width: 13px;
             height: 13px;
-            border-radius: 2.5px;
+            border-radius: 3px;
             background: var(--heat-empty);
             cursor: pointer;
-            transition: all 0.12s ease;
+            transition: all 0.15s ease;
             position: relative;
             outline: none;
             border: 1px solid transparent;
         }
         .heatmap-cell:hover {
-            transform: scale(1.35);
+            transform: scale(1.4);
             z-index: 5;
             box-shadow: 0 0 0 3px var(--accent);
             border-color: var(--surface);
@@ -335,11 +397,10 @@
             background: var(--heat-l4);
         }
 
-        /* 热力图提示框 */
         .heatmap-tooltip {
             position: fixed;
             pointer-events: none;
-            background: #1f2328;
+            background: #1e293b;
             color: #fff;
             padding: 6px 10px;
             border-radius: 6px;
@@ -347,7 +408,7 @@
             font-weight: 500;
             white-space: nowrap;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             opacity: 0;
             transform: translateY(4px);
             transition: opacity 0.1s ease, transform 0.1s ease;
@@ -365,37 +426,38 @@
             flex-direction: column;
             min-height: 0;
             overflow: hidden;
+            background: var(--surface);
+            margin: 12px 12px 0 12px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: background var(--transition), border-color var(--transition);
         }
         .editor-header {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             gap: 10px;
-            padding: 8px 20px;
+            padding: 8px 16px;
             background: var(--surface-alt);
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border);
             flex-shrink: 0;
-            flex-wrap: wrap;
-        }
-        .editor-header .date-title {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--text);
-            white-space: nowrap;
+            border-radius: var(--radius) var(--radius) 0 0;
         }
         .editor-header .date-nav {
             display: flex;
             align-items: center;
             gap: 4px;
         }
-        .editor-header .word-count {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            white-space: nowrap;
-            margin-left: auto;
-        }
-        .editor-header .word-count strong {
+        .editor-header .date-title {
+            font-weight: 700;
+            font-size: 1rem;
             color: var(--text);
-            font-weight: 600;
+            white-space: nowrap;
+            background: var(--surface);
+            padding: 4px 12px;
+            border-radius: var(--radius-xs);
+            border: 1px solid var(--border);
         }
         .view-tabs {
             display: flex;
@@ -419,19 +481,78 @@
         }
         .view-tab.active {
             background: var(--surface);
-            color: var(--text);
+            color: var(--accent);
             font-weight: 600;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+            box-shadow: var(--shadow-sm);
         }
         .view-tab:hover:not(.active) {
             color: var(--text);
-            background: rgba(128, 128, 128, 0.08);
+            background: rgba(148, 163, 184, 0.1);
         }
+        .editor-header .word-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            margin-left: auto;
+            background: var(--surface);
+            padding: 4px 10px;
+            border-radius: var(--radius-xs);
+            border: 1px solid var(--border);
+        }
+        .editor-header .word-count strong {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Markdown 快捷工具栏 */
+        .md-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2px;
+            padding: 6px 12px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border-light);
+            flex-shrink: 0;
+        }
+        .md-btn {
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            font-family: var(--font-sans);
+            border-radius: var(--radius-xs);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            white-space: nowrap;
+            letter-spacing: -0.01em;
+        }
+        .md-btn:hover {
+            background: var(--accent-light);
+            color: var(--accent);
+            box-shadow: var(--shadow-sm);
+        }
+        .md-btn:active {
+            transform: scale(0.96);
+        }
+        .md-btn.separator {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+            padding: 0;
+            margin: 0 4px;
+            cursor: default;
+            pointer-events: none;
+        }
+
         .editor-body {
             flex: 1;
             display: flex;
             min-height: 0;
             overflow: hidden;
+            border-radius: 0 0 var(--radius) var(--radius);
         }
         .editor-pane {
             flex: 1;
@@ -462,6 +583,7 @@
             overflow-y: auto;
             user-select: text;
             -webkit-user-select: text;
+            border-radius: 0 0 var(--radius) var(--radius);
         }
         .editor-textarea::placeholder {
             color: var(--text-muted);
@@ -473,44 +595,29 @@
             background: var(--surface);
             user-select: text;
             -webkit-user-select: text;
+            border-radius: 0 0 var(--radius) var(--radius);
         }
         .preview-pane h1,
         .preview-pane h2,
-        .preview-pane h3,
-        .preview-pane h4,
-        .preview-pane h5,
-        .preview-pane h6 {
+        .preview-pane h3 {
             margin-top: 1em;
             margin-bottom: 0.5em;
             font-weight: 600;
-            line-height: 1.3;
             color: var(--text);
         }
         .preview-pane h1 {
-            font-size: 1.6em;
+            font-size: 1.5em;
             border-bottom: 2px solid var(--border-light);
             padding-bottom: 0.3em;
         }
         .preview-pane h2 {
-            font-size: 1.35em;
+            font-size: 1.3em;
             border-bottom: 1px solid var(--border-light);
             padding-bottom: 0.2em;
-        }
-        .preview-pane h3 {
-            font-size: 1.15em;
         }
         .preview-pane p {
             margin-bottom: 0.8em;
             line-height: 1.7;
-        }
-        .preview-pane ul,
-        .preview-pane ol {
-            margin-bottom: 0.8em;
-            padding-left: 1.8em;
-        }
-        .preview-pane li {
-            margin-bottom: 0.25em;
-            line-height: 1.6;
         }
         .preview-pane blockquote {
             border-left: 4px solid var(--accent);
@@ -526,7 +633,6 @@
             border-radius: 4px;
             font-family: var(--font-mono);
             font-size: 0.85em;
-            border: 1px solid var(--border-light);
         }
         .preview-pane pre {
             background: var(--surface-alt);
@@ -534,14 +640,10 @@
             border-radius: var(--radius-sm);
             overflow-x: auto;
             margin: 0.8em 0;
-            border: 1px solid var(--border-light);
         }
         .preview-pane pre code {
             background: none;
             padding: 0;
-            border: none;
-            font-size: 0.85em;
-            line-height: 1.55;
         }
         .preview-pane table {
             border-collapse: collapse;
@@ -552,31 +654,17 @@
         .preview-pane td {
             border: 1px solid var(--border);
             padding: 8px 12px;
-            text-align: left;
         }
         .preview-pane th {
             background: var(--surface-alt);
-            font-weight: 600;
         }
         .preview-pane img {
             max-width: 100%;
             border-radius: var(--radius-sm);
         }
-        .preview-pane hr {
-            border: none;
-            border-top: 2px solid var(--border-light);
-            margin: 1.2em 0;
-        }
         .preview-pane a {
             color: var(--accent);
             text-decoration: none;
-        }
-        .preview-pane a:hover {
-            text-decoration: underline;
-        }
-        .preview-pane input[type="checkbox"] {
-            margin-right: 6px;
-            accent-color: var(--accent);
         }
 
         /* ========== 底部状态栏 ========== */
@@ -584,27 +672,25 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            padding: 5px 20px;
-            background: var(--surface-alt);
-            border-top: 1px solid var(--border-light);
+            padding: 6px 24px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
             font-size: 0.73rem;
             color: var(--text-muted);
             flex-shrink: 0;
-            min-height: 26px;
+            min-height: 28px;
+            transition: background var(--transition);
         }
-        .status-bar .status-dot {
-            width: 7px;
-            height: 7px;
+        .status-dot {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: #40c463;
+            background: var(--success);
             flex-shrink: 0;
         }
-        .status-bar .status-dot.saving {
-            background: #d29922;
+        .status-dot.saving {
+            background: var(--warning);
             animation: blink 0.6s ease-in-out infinite;
-        }
-        .status-bar .status-dot.error {
-            background: #cf222e;
         }
         @keyframes blink {
             0%,
@@ -620,34 +706,28 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
             z-index: 100;
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 0.15s ease;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            animation: fadeIn 0.2s ease;
         }
         .modal {
             background: var(--surface);
             border-radius: var(--radius);
-            padding: 24px;
+            padding: 28px;
             box-shadow: var(--shadow-lg);
-            max-width: 440px;
+            max-width: 420px;
             width: 90%;
             text-align: center;
             border: 1px solid var(--border);
         }
         .modal h2 {
-            margin-bottom: 10px;
-            font-size: 1.2rem;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            color: var(--text);
         }
         .modal p {
             color: var(--text-secondary);
@@ -659,7 +739,7 @@
             margin: 4px;
         }
 
-        /* ========== Toast ========== */
+        /* Toast */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -672,7 +752,7 @@
         .toast {
             padding: 10px 16px;
             border-radius: var(--radius-sm);
-            background: #1f2328;
+            background: #1e293b;
             color: #fff;
             font-size: 0.85rem;
             font-weight: 500;
@@ -682,13 +762,10 @@
             pointer-events: none;
         }
         .toast.success {
-            border-left: 3px solid #40c463;
+            border-left: 4px solid var(--success);
         }
         .toast.warning {
-            border-left: 3px solid #d29922;
-        }
-        .toast.error {
-            border-left: 3px solid #cf222e;
+            border-left: 4px solid var(--warning);
         }
         @keyframes slideIn {
             from {
@@ -711,14 +788,11 @@
             }
         }
 
-        /* ========== 响应式 ========== */
+        /* 响应式 */
         @media (max-width: 768px) {
             .toolbar {
                 padding: 8px 12px;
                 gap: 6px;
-            }
-            .toolbar .logo {
-                font-size: 1.1em;
             }
             .folder-path {
                 max-width: 150px;
@@ -732,35 +806,9 @@
             .heatmap-cell {
                 width: 10px;
                 height: 10px;
-                border-radius: 2px;
             }
-            .heatmap-grid {
-                gap: 2px;
-            }
-            .heatmap-week {
-                gap: 2px;
-            }
-            .heatmap-day-labels {
-                gap: 2px;
-                font-size: 0.55rem;
-            }
-            .heatmap-day-labels span {
-                height: 10px;
-            }
-            .editor-header {
-                padding: 6px 12px;
-                gap: 6px;
-            }
-            .editor-textarea {
-                padding: 12px;
-                font-size: 0.82rem;
-            }
-            .preview-pane {
-                padding: 12px;
-            }
-            .btn {
-                padding: 5px 10px;
-                font-size: 0.78rem;
+            .editor-area {
+                margin: 8px 8px 0 8px;
             }
         }
     </style>
@@ -776,19 +824,21 @@
                 <line x1="8" y1="7" x2="16" y2="7"></line>
                 <line x1="8" y1="11" x2="14" y2="11"></line>
             </svg>
-            Markdown 日记
+            花漾日记
         </span>
         <span class="spacer"></span>
-        <span class="folder-path" id="folderPath" title="点击更改文件夹">📁 未选择文件夹</span>
-        <button class="btn btn-primary" id="btnSelectFolder" title="选择日记文件夹">
+        <span class="folder-path" id="folderPath" title="点击更改日记文件夹">📁 未连接文件夹</span>
+        <button class="btn btn-primary" id="btnSelectFolder" title="选择或更改日记文件夹">
             📂 选择文件夹
         </button>
-        <button class="btn btn-icon" id="btnToggleTheme" title="切换暗色模式">
-            🌓
-        </button>
-        <button class="btn btn-icon" id="btnGoToday" title="回到今天">
-            📅
-        </button>
+        <button class="btn btn-icon" id="btnToggleTheme" title="切换暗色模式">🌓</button>
+        <button class="btn btn-icon" id="btnGoToday" title="回到今天">📅</button>
+    </div>
+
+    <!-- 恢复提示条 -->
+    <div class="recovery-banner hidden" id="recoveryBanner">
+        <span>⚠️ 文件夹连接已失效，请重新授权以访问日记。</span>
+        <button class="btn" id="btnReconnect">重新连接</button>
     </div>
 
     <!-- 主内容区 -->
@@ -814,22 +864,37 @@
                     <button class="btn btn-sm btn-icon" id="btnPrevDay" title="前一天">◀</button>
                     <span class="date-title" id="dateTitle">2026年05月03日</span>
                     <button class="btn btn-sm btn-icon" id="btnNextDay" title="后一天">▶</button>
-                    <button class="btn btn-sm" id="btnGoToday2" title="回到今天">今天</button>
+                    <button class="btn btn-sm" id="btnGoToday2">今天</button>
                 </div>
                 <div class="view-tabs" id="viewTabs">
                     <button class="view-tab active" data-view="edit">✏️ 编辑</button>
                     <button class="view-tab" data-view="split">📑 分屏</button>
                     <button class="view-tab" data-view="preview">👁 预览</button>
                 </div>
-                <span class="word-count" id="wordCount">字数: <strong>0</strong></span>
+                <span class="word-count" id="wordCount">字数 <strong>0</strong></span>
+            </div>
+            <!-- Markdown 快捷工具栏 -->
+            <div class="md-toolbar" id="mdToolbar">
+                <button class="md-btn" data-action="bold" title="加粗 (Ctrl+B)"><b>B</b></button>
+                <button class="md-btn" data-action="italic" title="斜体 (Ctrl+I)"><i>I</i></button>
+                <button class="md-btn" data-action="strikethrough" title="删除线"><s>S</s></button>
+                <span class="md-btn separator"></span>
+                <button class="md-btn" data-action="h2" title="二级标题">H2</button>
+                <button class="md-btn" data-action="h3" title="三级标题">H3</button>
+                <span class="md-btn separator"></span>
+                <button class="md-btn" data-action="ul" title="无序列表">• 列表</button>
+                <button class="md-btn" data-action="ol" title="有序列表">1. 列表</button>
+                <button class="md-btn" data-action="quote" title="引用">❝ 引用</button>
+                <span class="md-btn separator"></span>
+                <button class="md-btn" data-action="link" title="插入链接">🔗 链接</button>
+                <button class="md-btn" data-action="image" title="插入图片">🖼️ 图片</button>
+                <button class="md-btn" data-action="code" title="行内代码">&lt;/&gt; 代码</button>
             </div>
             <div class="editor-body" id="editorBody">
-                <!-- 编辑面板 -->
                 <div class="editor-pane split-left" id="editPane">
                     <textarea class="editor-textarea" id="editorTextarea"
-                    placeholder="开始书写今天的日记...&#10;&#10;支持 Markdown 语法：&#10;# 标题&#10;**粗体** *斜体*&#10;- 列表&#10;[链接](url)&#10;> 引用&#10;&#10;点击上方热力图的方块可切换日期。"></textarea>
+                    placeholder="今天有什么新鲜事？用 Markdown 记录吧..."></textarea>
                 </div>
-                <!-- 预览面板 -->
                 <div class="editor-pane preview-pane hidden" id="previewPane"></div>
             </div>
         </div>
@@ -838,44 +903,37 @@
     <!-- 底部状态栏 -->
     <div class="status-bar">
         <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">就绪</span>
-        <span style="margin-left:auto;">Ctrl+S 保存</span>
+        <span id="statusText">未连接文件夹</span>
+        <span style="margin-left:auto;">Ctrl+S 保存 · 箭头键切换日期</span>
     </div>
 
     <!-- 热力图提示框 -->
     <div class="heatmap-tooltip" id="heatmapTooltip"></div>
-
-    <!-- Toast容器 -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- 首次使用弹窗 -->
+    <!-- 弹窗：首次使用或恢复失败 -->
     <div class="modal-overlay" id="welcomeModal">
         <div class="modal">
-            <h2>📔 欢迎使用 Markdown 日记</h2>
-            <p>请选择一个文件夹来存储您的日记文件。<br>每天日记保存为一个 <code>.md</code> 文件，文件名格式为 <strong>YYYY-MM-DD.md</strong>。</p>
-            <p style="font-size:0.8rem;color:var(--text-muted);">💡 建议创建一个专用文件夹，如 <code>我的日记/</code></p>
+            <h2 id="modalTitle">📔 欢迎使用花漾日记</h2>
+            <p id="modalMessage">请选择一个文件夹来存放日记文件（每篇日记为一个 .md 文件）。</p>
+            <p style="font-size:0.75rem;color:var(--text-muted);">💡 推荐创建专用文件夹，如“我的日记”</p>
             <button class="btn btn-primary" id="btnWelcomeSelect">📂 选择文件夹</button>
-            <button class="btn" id="btnWelcomeDemo">🎮 演示模式</button>
-            <p style="font-size:0.7rem;color:var(--text-muted);margin-top:10px;">
-                ⚠️ 需要 Chrome/Edge 浏览器以支持文件系统访问
-            </p>
+            <button class="btn" id="btnWelcomeDemo">🎮 体验演示</button>
+            <button class="btn" id="btnWelcomeClose" style="display:none;">稍后设置</button>
         </div>
     </div>
 
     <script>
         (function() {
-            // ==================== 常量 ====================
             const FILE_EXT = '.md';
             const DATE_FORMAT_REGEX = /^(\d{4})-(\d{2})-(\d{2})\.md$/;
             const AUTO_SAVE_DELAY = 1500;
-            const DB_NAME = 'markdown-diary-db';
+            const DB_NAME = 'markdown-diary-v2';
             const DB_STORE = 'handles';
             const DB_KEY = 'directoryHandle';
 
-            // ==================== DOM引用 ====================
+            // DOM 元素
             const $ = (sel) => document.querySelector(sel);
-            const $$ = (sel) => document.querySelectorAll(sel);
-
             const elFolderPath = $('#folderPath');
             const elBtnSelectFolder = $('#btnSelectFolder');
             const elBtnToggleTheme = $('#btnToggleTheme');
@@ -898,22 +956,26 @@
             const elStatusText = $('#statusText');
             const elToastContainer = $('#toastContainer');
             const elWelcomeModal = $('#welcomeModal');
+            const elModalTitle = $('#modalTitle');
+            const elModalMessage = $('#modalMessage');
             const elBtnWelcomeSelect = $('#btnWelcomeSelect');
             const elBtnWelcomeDemo = $('#btnWelcomeDemo');
-            const elHeatmapContainer = $('#heatmapContainer');
+            const elBtnWelcomeClose = $('#btnWelcomeClose');
+            const elRecoveryBanner = $('#recoveryBanner');
+            const elBtnReconnect = $('#btnReconnect');
+            const elMdToolbar = $('#mdToolbar');
 
-            // ==================== 状态 ====================
+            // 状态变量
             let directoryHandle = null;
             let currentDate = getTodayDateString();
             let currentContent = '';
             let isDirty = false;
             let saveTimeout = null;
-            let diaryDataCache = {}; // { 'YYYY-MM-DD': { charCount: number, loaded: bool } }
-            let currentView = 'edit'; // 'edit' | 'preview' | 'split'
+            let diaryDataCache = {};
+            let currentView = 'edit';
             let isDemoMode = false;
-            let demoStorage = {}; // 演示模式的localStorage模拟
+            let demoStorage = {};
 
-            // ==================== 工具函数 ====================
             function getTodayDateString() {
                 const now = new Date();
                 const y = now.getFullYear();
@@ -932,11 +994,6 @@
                 return `${y}年${String(m).padStart(2,'0')}月${String(d).padStart(2,'0')}日`;
             }
 
-            function getDayOfWeek(str) {
-                const d = dateStringToDate(str);
-                return d.getDay(); // 0=周日, 6=周六
-            }
-
             function addDays(dateStr, days) {
                 const d = dateStringToDate(dateStr);
                 d.setDate(d.getDate() + days);
@@ -947,9 +1004,7 @@
             }
 
             function countChars(text) {
-                if (!text) return 0;
-                // 统计非空白字符数作为文本量
-                return text.replace(/\s/g, '').length;
+                return text ? text.replace(/\s/g, '').length : 0;
             }
 
             function getCharLevel(count) {
@@ -960,50 +1015,43 @@
                 return 4;
             }
 
-            // ==================== Toast ====================
             function showToast(message, type = 'success') {
                 const toast = document.createElement('div');
                 toast.className = `toast ${type}`;
                 toast.textContent = message;
                 elToastContainer.appendChild(toast);
                 setTimeout(() => {
-                    if (toast.parentNode) toast.parentNode.removeChild(toast);
+                    if (toast.parentNode) toast.remove();
                 }, 3000);
             }
 
-            // ==================== 状态栏 ====================
             function setStatus(text, type = 'normal') {
                 elStatusText.textContent = text;
                 elStatusDot.className = 'status-dot';
                 if (type === 'saving') elStatusDot.classList.add('saving');
-                if (type === 'error') elStatusDot.classList.add('error');
             }
 
-            // ==================== 主题切换 ====================
+            // 主题
             function applyTheme() {
                 const saved = localStorage.getItem('diary-theme');
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const isDark = saved ? saved === 'dark' : prefersDark;
-                document.body.classList.toggle('dark', isDark);
+                document.body.classList.toggle('dark', saved ? saved === 'dark' : prefersDark);
             }
-
-            function toggleTheme() {
-                const isDark = document.body.classList.contains('dark');
-                document.body.classList.toggle('dark', !isDark);
-                localStorage.setItem('diary-theme', !isDark ? 'dark' : 'light');
-                showToast(!isDark ? '已切换至暗色模式 🌙' : '已切换至亮色模式 ☀️');
-            }
-
             applyTheme();
 
-            // ==================== IndexedDB 持久化目录句柄 ====================
+            function toggleTheme() {
+                const isDark = document.body.classList.toggle('dark');
+                localStorage.setItem('diary-theme', isDark ? 'dark' : 'light');
+                showToast(isDark ? '沉浸暗色模式 🌙' : '明亮模式 ☀️');
+            }
+
+            // IndexedDB 持久化
             function openDB() {
                 return new Promise((resolve, reject) => {
                     const request = indexedDB.open(DB_NAME, 1);
                     request.onupgradeneeded = (e) => {
-                        const db = e.target.result;
-                        if (!db.objectStoreNames.contains(DB_STORE)) {
-                            db.createObjectStore(DB_STORE);
+                        if (!e.target.result.objectStoreNames.contains(DB_STORE)) {
+                            e.target.result.createObjectStore(DB_STORE);
                         }
                     };
                     request.onsuccess = (e) => resolve(e.target.result);
@@ -1015,193 +1063,119 @@
                 try {
                     const db = await openDB();
                     const tx = db.transaction(DB_STORE, 'readwrite');
-                    const store = tx.objectStore(DB_STORE);
-                    await new Promise((resolve, reject) => {
-                        const req = store.put(handle, DB_KEY);
-                        req.onsuccess = resolve;
-                        req.onerror = reject;
-                    });
-                    await new Promise((resolve, reject) => {
-                        tx.oncomplete = resolve;
-                        tx.onerror = reject;
-                    });
+                    tx.objectStore(DB_STORE).put(handle, DB_KEY);
+                    await new Promise(r => { tx.oncomplete = r;
+                        tx.onerror = r; });
                     db.close();
                 } catch (err) {
-                    console.warn('无法保存目录句柄到IndexedDB:', err);
+                    console.warn('保存句柄失败:', err);
                 }
             }
 
             async function loadDirectoryHandleFromDB() {
                 try {
                     const db = await openDB();
-                    const tx = db.transaction(DB_STORE, 'readonly');
-                    const store = tx.objectStore(DB_STORE);
-                    const handle = await new Promise((resolve, reject) => {
-                        const req = store.get(DB_KEY);
-                        req.onsuccess = () => resolve(req.result);
-                        req.onerror = reject;
+                    const handle = await new Promise((res, rej) => {
+                        const req = db.transaction(DB_STORE).objectStore(DB_STORE).get(DB_KEY);
+                        req.onsuccess = () => res(req.result);
+                        req.onerror = rej;
                     });
                     db.close();
-                    if (handle) {
-                        // 验证权限
-                        const options = { mode: 'readwrite' };
-                        const permissionOk = await verifyPermission(handle, options);
-                        if (permissionOk) {
-                            return handle;
-                        }
-                    }
-                    return null;
+                    return handle || null;
                 } catch (err) {
-                    console.warn('无法从IndexedDB加载目录句柄:', err);
                     return null;
                 }
             }
 
-            async function verifyPermission(handle, options) {
+            async function verifyPermission(handle, options = { mode: 'readwrite' }) {
                 try {
-                    if (await handle.queryPermission(options) === 'granted') {
-                        return true;
-                    }
-                    if (await handle.requestPermission(options) === 'granted') {
-                        return true;
-                    }
-                    return false;
-                } catch (err) {
+                    return (await handle.queryPermission(options)) === 'granted' ||
+                        (await handle.requestPermission(options)) === 'granted';
+                } catch {
                     return false;
                 }
             }
 
-            // ==================== 文件系统操作 ====================
+            // 文件夹选择与恢复
             async function selectFolder() {
                 try {
-                    const handle = await window.showDirectoryPicker({
-                        mode: 'readwrite',
-                        startIn: 'documents',
-                    });
+                    const handle = await window.showDirectoryPicker({ mode: 'readwrite', startIn: 'documents' });
                     directoryHandle = handle;
                     isDemoMode = false;
                     await saveDirectoryHandleToDB(handle);
                     elFolderPath.textContent = '📁 ' + handle.name;
-                    elFolderPath.title = '点击更改文件夹 - 当前: ' + handle.name;
-                    setStatus('文件夹已就绪');
+                    elFolderPath.title = handle.name;
+                    elRecoveryBanner.classList.add('hidden');
+                    setStatus('文件夹已连接');
                     await scanDiaryFiles();
                     await loadDiary(currentDate);
                     updateHeatmap();
-                    showToast('文件夹已连接: ' + handle.name, 'success');
+                    showToast('已连接文件夹: ' + handle.name, 'success');
                 } catch (err) {
-                    if (err.name !== 'AbortError') {
-                        console.error('选择文件夹失败:', err);
-                        showToast('选择文件夹失败: ' + err.message, 'error');
-                    }
+                    if (err.name !== 'AbortError') showToast('选择失败: ' + err.message, 'error');
                 }
             }
 
             async function scanDiaryFiles() {
-                if (!directoryHandle && !isDemoMode) return;
                 diaryDataCache = {};
-
                 if (isDemoMode) {
-                    // 从demoStorage加载
-                    for (const [key, value] of Object.entries(demoStorage)) {
+                    for (const [key, val] of Object.entries(demoStorage)) {
                         const match = key.match(DATE_FORMAT_REGEX);
-                        if (match) {
-                            const dateStr = `${match[1]}-${match[2]}-${match[3]}`;
-                            diaryDataCache[dateStr] = {
-                                charCount: countChars(value),
-                                loaded: false,
-                            };
-                        }
+                        if (match) diaryDataCache[`${match[1]}-${match[2]}-${match[3]}`] = { charCount: countChars(
+                                val), loaded: false };
                     }
                     return;
                 }
-
+                if (!directoryHandle) return;
                 try {
                     const entries = [];
                     for await (const entry of directoryHandle.values()) {
                         if (entry.kind === 'file' && entry.name.endsWith(FILE_EXT)) {
                             const match = entry.name.match(DATE_FORMAT_REGEX);
-                            if (match) {
-                                const dateStr = `${match[1]}-${match[2]}-${match[3]}`;
-                                entries.push({ dateStr, entry });
-                            }
+                            if (match) entries.push({ dateStr: `${match[1]}-${match[2]}-${match[3]}`, entry });
                         }
                     }
-
-                    // 批量读取文件统计字数
-                    const loadPromises = entries.map(async ({ dateStr, entry }) => {
+                    await Promise.all(entries.map(async ({ dateStr, entry }) => {
                         try {
-                            const file = await entry.getFile();
-                            const text = await file.text();
-                            diaryDataCache[dateStr] = {
-                                charCount: countChars(text),
-                                loaded: false,
-                            };
-                        } catch (err) {
+                            const text = await (await entry.getFile()).text();
+                            diaryDataCache[dateStr] = { charCount: countChars(text), loaded: false };
+                        } catch {
                             diaryDataCache[dateStr] = { charCount: 0, loaded: false };
                         }
-                    });
-
-                    await Promise.all(loadPromises);
+                    }));
                     setStatus(`已扫描 ${entries.length} 篇日记`);
                 } catch (err) {
-                    console.error('扫描文件失败:', err);
-                    setStatus('扫描文件失败', 'error');
+                    console.error('扫描失败:', err);
                 }
             }
 
             async function readFile(dateStr) {
                 const filename = dateStr + FILE_EXT;
-
-                if (isDemoMode) {
-                    return demoStorage[filename] || '';
-                }
-
+                if (isDemoMode) return demoStorage[filename] || '';
                 if (!directoryHandle) return '';
                 try {
-                    const fileHandle = await directoryHandle.getFileHandle(filename);
-                    const file = await fileHandle.getFile();
-                    const text = await file.text();
-                    return text;
+                    const file = await (await directoryHandle.getFileHandle(filename)).getFile();
+                    return await file.text();
                 } catch (err) {
-                    if (err.name === 'NotFoundError') {
-                        return '';
-                    }
-                    throw err;
+                    return '';
                 }
             }
 
             async function writeFile(dateStr, content) {
                 const filename = dateStr + FILE_EXT;
-
                 if (isDemoMode) {
                     demoStorage[filename] = content;
-                    diaryDataCache[dateStr] = {
-                        charCount: countChars(content),
-                        loaded: true,
-                    };
+                    diaryDataCache[dateStr] = { charCount: countChars(content), loaded: true };
                     return;
                 }
-
-                if (!directoryHandle) {
-                    showToast('请先选择日记文件夹', 'warning');
-                    return;
-                }
-                try {
-                    const fileHandle = await directoryHandle.getFileHandle(filename, { create: true });
-                    const writable = await fileHandle.createWritable();
-                    await writable.write(content);
-                    await writable.close();
-                    diaryDataCache[dateStr] = {
-                        charCount: countChars(content),
-                        loaded: true,
-                    };
-                } catch (err) {
-                    console.error('保存文件失败:', err);
-                    throw err;
-                }
+                if (!directoryHandle) throw new Error('未连接文件夹');
+                const fileHandle = await directoryHandle.getFileHandle(filename, { create: true });
+                const writable = await fileHandle.createWritable();
+                await writable.write(content);
+                await writable.close();
+                diaryDataCache[dateStr] = { charCount: countChars(content), loaded: true };
             }
 
-            // ==================== 日记加载与保存 ====================
             async function loadDiary(dateStr) {
                 try {
                     const content = await readFile(dateStr);
@@ -1214,467 +1188,360 @@
                     updatePreview();
                     updateHeatmapSelection();
                     updateNavButtons();
-                    // 滚动编辑器到顶部
                     elEditorTextarea.scrollTop = 0;
                     elPreviewPane.scrollTop = 0;
-                    setStatus('已加载: ' + formatDateDisplay(dateStr));
+                    setStatus('已加载 ' + formatDateDisplay(dateStr));
                 } catch (err) {
-                    console.error('加载日记失败:', err);
                     setStatus('加载失败', 'error');
-                    showToast('加载日记失败: ' + err.message, 'error');
                 }
             }
 
             async function saveCurrentDiary() {
                 if (!isDirty) return;
                 if (!directoryHandle && !isDemoMode) {
-                    setStatus('未选择文件夹，无法保存', 'error');
+                    setStatus('未连接文件夹，无法保存', 'error');
                     return;
                 }
                 try {
                     setStatus('正在保存...', 'saving');
                     await writeFile(currentDate, currentContent);
                     isDirty = false;
-                    setStatus('已保存: ' + formatDateDisplay(currentDate));
+                    setStatus('已保存 ' + formatDateDisplay(currentDate));
                     updateWordCount();
                     updateHeatmap();
-                    elStatusDot.className = 'status-dot';
                 } catch (err) {
-                    console.error('保存失败:', err);
                     setStatus('保存失败', 'error');
                     showToast('保存失败: ' + err.message, 'error');
-                    elStatusDot.className = 'status-dot error';
                 }
             }
 
             function scheduleAutoSave() {
                 if (saveTimeout) clearTimeout(saveTimeout);
-                saveTimeout = setTimeout(async () => {
-                    await saveCurrentDiary();
-                }, AUTO_SAVE_DELAY);
+                saveTimeout = setTimeout(saveCurrentDiary, AUTO_SAVE_DELAY);
             }
 
             function updateWordCount() {
-                const count = countChars(currentContent);
-                elWordCount.innerHTML = '字数: <strong>' + count.toLocaleString() + '</strong>';
+                const cnt = countChars(currentContent);
+                elWordCount.innerHTML = '字数 <strong>' + cnt.toLocaleString() + '</strong>';
             }
 
             function updatePreview() {
                 try {
-                    const html = marked.parse(currentContent || '*（暂无内容）*');
-                    elPreviewPane.innerHTML = html;
-                } catch (err) {
-                    elPreviewPane.innerHTML = '<p style="color:var(--danger)">渲染预览失败</p>';
+                    elPreviewPane.innerHTML = marked.parse(currentContent || '*（暂无内容）*');
+                } catch {
+                    elPreviewPane.innerHTML = '<p style="color:var(--danger)">渲染失败</p>';
                 }
             }
 
             function updateNavButtons() {
-                const today = getTodayDateString();
-                elBtnNextDay.disabled = currentDate >= today;
-                // 前一天总是可用（可以查看过去的日记）
-                elBtnPrevDay.disabled = false;
+                elBtnNextDay.disabled = currentDate >= getTodayDateString();
             }
 
-            // ==================== 视图切换 ====================
             function setView(view) {
                 currentView = view;
-                elViewTabs.querySelectorAll('.view-tab').forEach(tab => {
-                    tab.classList.toggle('active', tab.dataset.view === view);
-                });
-                switch (view) {
-                    case 'edit':
-                        elEditPane.classList.remove('hidden', 'split-left');
-                        elEditPane.style.flex = '1';
-                        elPreviewPane.classList.add('hidden');
-                        elPreviewPane.style.flex = '';
-                        elEditPane.style.borderRight = 'none';
-                        break;
-                    case 'preview':
-                        elEditPane.classList.add('hidden');
-                        elEditPane.style.flex = '';
-                        elPreviewPane.classList.remove('hidden');
-                        elPreviewPane.style.flex = '1';
-                        elEditPane.style.borderRight = 'none';
-                        updatePreview();
-                        break;
-                    case 'split':
-                        elEditPane.classList.remove('hidden');
-                        elEditPane.classList.add('split-left');
-                        elEditPane.style.flex = '1';
-                        elPreviewPane.classList.remove('hidden');
-                        elPreviewPane.style.flex = '1';
-                        elEditPane.style.borderRight = '1px solid var(--border-light)';
-                        updatePreview();
-                        break;
+                elViewTabs.querySelectorAll('.view-tab').forEach(t => t.classList.toggle('active', t.dataset.view ===
+                    view));
+                if (view === 'edit') {
+                    elEditPane.classList.remove('hidden', 'split-left');
+                    elPreviewPane.classList.add('hidden');
+                } else if (view === 'preview') {
+                    elEditPane.classList.add('hidden');
+                    elPreviewPane.classList.remove('hidden');
+                    updatePreview();
+                } else {
+                    elEditPane.classList.remove('hidden');
+                    elEditPane.classList.add('split-left');
+                    elPreviewPane.classList.remove('hidden');
+                    updatePreview();
                 }
             }
 
-            // ==================== 热力图 ====================
+            // 热力图
             function getHeatmapDateRange() {
                 const today = dateStringToDate(getTodayDateString());
-                // 往回找约52周
-                const startDate = new Date(today);
-                startDate.setDate(startDate.getDate() - 364);
-                // 调整到周日开始
-                while (startDate.getDay() !== 0) {
-                    startDate.setDate(startDate.getDate() - 1);
-                }
-                // 确保覆盖到今天
-                const endDate = new Date(today);
-                // 调整到周六结束
-                while (endDate.getDay() !== 6) {
-                    endDate.setDate(endDate.getDate() + 1);
-                }
-                return {
-                    start: startDate,
-                    end: endDate,
-                };
+                const start = new Date(today);
+                start.setDate(start.getDate() - 364);
+                while (start.getDay() !== 0) start.setDate(start.getDate() - 1);
+                const end = new Date(today);
+                while (end.getDay() !== 6) end.setDate(end.getDate() + 1);
+                return { start, end };
             }
 
-            function dateToStr(d) {
-                const y = d.getFullYear();
-                const m = String(d.getMonth() + 1).padStart(2, '0');
-                const day = String(d.getDate()).padStart(2, '0');
-                return `${y}-${m}-${day}`;
-            }
+            function dateToStr(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
             function updateHeatmap() {
                 const { start, end } = getHeatmapDateRange();
                 const todayStr = getTodayDateString();
-
-                // 构建日期列表（按周排列）
                 const weeks = [];
-                let currentDay = new Date(start);
-                const endTime = end.getTime();
-
-                while (currentDay.getTime() <= endTime) {
+                const cur = new Date(start);
+                while (cur.getTime() <= end.getTime()) {
                     const week = [];
-                    for (let dow = 0; dow < 7; dow++) {
-                        const ds = dateToStr(currentDay);
-                        week.push({
-                            dateStr: ds,
-                            charCount: diaryDataCache[ds]?.charCount || 0,
-                            isToday: ds === todayStr,
-                            isFuture: currentDay.getTime() > new Date().getTime(),
-                        });
-                        currentDay.setDate(currentDay.getDate() + 1);
-                        if (currentDay.getTime() > endTime && dow === 6) break;
+                    for (let d = 0; d < 7; d++) {
+                        const ds = dateToStr(cur);
+                        week.push({ dateStr: ds, charCount: diaryDataCache[ds]?.charCount || 0, isToday: ds === todayStr,
+                            isFuture: cur.getTime() > Date.now() });
+                        cur.setDate(cur.getDate() + 1);
+                        if (cur.getTime() > end.getTime() && d === 6) break;
                     }
-                    if (week.length > 0) weeks.push(week);
+                    if (week.length) weeks.push(week);
                 }
-
-                // 渲染月份标签
                 renderMonthLabels(weeks);
-
-                // 渲染热力图网格
                 elHeatmapGrid.innerHTML = '';
-                weeks.forEach((week) => {
-                    const weekDiv = document.createElement('div');
-                    weekDiv.className = 'heatmap-week';
-                    week.forEach((day) => {
+                weeks.forEach(week => {
+                    const wDiv = document.createElement('div');
+                    wDiv.className = 'heatmap-week';
+                    week.forEach(day => {
                         const cell = document.createElement('div');
                         cell.className = 'heatmap-cell';
                         cell.dataset.date = day.dateStr;
-                        cell.title = `${formatDateDisplay(day.dateStr)} - ${day.charCount.toLocaleString()} 字符`;
                         if (day.isToday) cell.classList.add('today');
                         if (day.dateStr === currentDate) cell.classList.add('selected');
                         if (day.isFuture) {
                             cell.style.background = 'transparent';
-                            cell.style.border = '1px solid transparent';
-                            cell.style.cursor = 'default';
                             cell.style.pointerEvents = 'none';
-                            cell.title = '';
                         } else {
-                            const level = getCharLevel(day.charCount);
-                            if (level > 0) cell.classList.add('level-' + level);
-                            cell.addEventListener('click', () => {
-                                if (day.dateStr !== currentDate || isDirty) {
-                                    handleDateChange(day.dateStr);
-                                }
-                            });
+                            const lvl = getCharLevel(day.charCount);
+                            if (lvl) cell.classList.add('level-' + lvl);
+                            cell.addEventListener('click', () => { if (day.dateStr !== currentDate || isDirty)
+                                    handleDateChange(day.dateStr); });
                             cell.addEventListener('mouseenter', (e) => {
-                                showTooltip(e, day);
+                                elHeatmapTooltip.textContent =
+                                    `${formatDateDisplay(day.dateStr)} — ${day.charCount.toLocaleString()} 字符`;
+                                const rect = e.target.getBoundingClientRect();
+                                elHeatmapTooltip.style.left = rect.left + rect.width / 2 + 'px';
+                                elHeatmapTooltip.style.top = rect.top - 32 + 'px';
+                                elHeatmapTooltip.classList.add('show');
                             });
-                            cell.addEventListener('mouseleave', hideTooltip);
+                            cell.addEventListener('mouseleave', () => elHeatmapTooltip.classList.remove(
+                            'show'));
                         }
-                        weekDiv.appendChild(cell);
+                        wDiv.appendChild(cell);
                     });
-                    elHeatmapGrid.appendChild(weekDiv);
+                    elHeatmapGrid.appendChild(wDiv);
                 });
-
-                updateHeatmapSelection();
             }
 
             function renderMonthLabels(weeks) {
                 elHeatmapMonths.innerHTML = '';
-                if (weeks.length === 0) return;
-                const containerWidth = elHeatmapMonths.parentElement.clientWidth - 40;
-                const totalWeeks = weeks.length;
-                const cellWidth = 13;
-                const gap = 3;
-                const weekWidth = cellWidth + gap;
-
-                const months = [];
-                let lastMonth = -1;
-                weeks.forEach((week, idx) => {
-                    const firstDay = week[0];
-                    if (firstDay && !firstDay.isFuture) {
-                        const m = parseInt(firstDay.dateStr.split('-')[1]);
-                        if (m !== lastMonth) {
-                            months.push({ month: m, weekIndex: idx, dateStr: firstDay.dateStr });
-                            lastMonth = m;
-                        }
+                if (!weeks.length) return;
+                const monthNames = ['', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+                let lastM = -1;
+                weeks.forEach((week, i) => {
+                    const m = parseInt(week[0].dateStr.split('-')[1]);
+                    if (m !== lastM) {
+                        const span = document.createElement('span');
+                        span.textContent = monthNames[m];
+                        span.style.left = (i * 16) + 'px';
+                        elHeatmapMonths.appendChild(span);
+                        lastM = m;
                     }
-                });
-
-                const monthNames = ['', '1月', '2月', '3月', '4月', '5月', '6月',
-                    '7月', '8月', '9月', '10月', '11月', '12月'
-                ];
-
-                months.forEach(({ month, weekIndex }) => {
-                    const span = document.createElement('span');
-                    span.textContent = monthNames[month];
-                    const leftPos = weekIndex * weekWidth;
-                    span.style.left = leftPos + 'px';
-                    elHeatmapMonths.appendChild(span);
                 });
             }
 
             function updateHeatmapSelection() {
-                const allCells = elHeatmapGrid.querySelectorAll('.heatmap-cell');
-                allCells.forEach(cell => {
-                    cell.classList.toggle('selected', cell.dataset.date === currentDate);
-                });
+                document.querySelectorAll('.heatmap-cell').forEach(c => c.classList.toggle('selected', c.dataset
+                    .date === currentDate));
             }
 
-            function showTooltip(event, day) {
-                const tooltip = elHeatmapTooltip;
-                tooltip.textContent = `${formatDateDisplay(day.dateStr)} — ${day.charCount.toLocaleString()} 字符`;
-                tooltip.classList.add('show');
-                const rect = event.target.getBoundingClientRect();
-                tooltip.style.left = rect.left + rect.width / 2 + 'px';
-                tooltip.style.top = rect.top - 32 + 'px';
-                tooltip.style.transform = 'translate(-50%, 0)';
-            }
-
-            function hideTooltip() {
-                elHeatmapTooltip.classList.remove('show');
-            }
-
-            async function handleDateChange(newDateStr) {
-                // 先保存当前日记
-                if (isDirty) {
-                    await saveCurrentDiary();
-                }
-                await loadDiary(newDateStr);
+            async function handleDateChange(newDate) {
+                if (isDirty) await saveCurrentDiary();
+                await loadDiary(newDate);
                 updateHeatmap();
             }
 
-            // ==================== 事件处理 ====================
+            // Markdown 工具栏
+            function insertMarkdown(before, after, placeholder = '') {
+                const ta = elEditorTextarea;
+                const start = ta.selectionStart;
+                const end = ta.selectionEnd;
+                const selected = ta.value.substring(start, end) || placeholder;
+                ta.setRangeText(before + selected + after, start, end, 'select');
+                if (start === end) {
+                    ta.selectionStart = start + before.length;
+                    ta.selectionEnd = start + before.length + selected.length;
+                }
+                ta.focus();
+                currentContent = ta.value;
+                isDirty = true;
+                updateWordCount();
+                scheduleAutoSave();
+                if (currentView === 'split') updatePreview();
+            }
+
+            elMdToolbar.addEventListener('click', (e) => {
+                const btn = e.target.closest('.md-btn');
+                if (!btn || btn.dataset.action === undefined) return;
+                const action = btn.dataset.action;
+                const ta = elEditorTextarea;
+                const start = ta.selectionStart;
+                const end = ta.selectionEnd;
+                const selected = ta.value.substring(start, end);
+                switch (action) {
+                    case 'bold':
+                        insertMarkdown('**', '**', '粗体');
+                        break;
+                    case 'italic':
+                        insertMarkdown('*', '*', '斜体');
+                        break;
+                    case 'strikethrough':
+                        insertMarkdown('~~', '~~', '删除线');
+                        break;
+                    case 'h2':
+                        insertMarkdown('## ', '', '二级标题');
+                        break;
+                    case 'h3':
+                        insertMarkdown('### ', '', '三级标题');
+                        break;
+                    case 'ul':
+                        insertMarkdown('- ', '', '列表项');
+                        break;
+                    case 'ol':
+                        insertMarkdown('1. ', '', '列表项');
+                        break;
+                    case 'quote':
+                        insertMarkdown('> ', '', '引用');
+                        break;
+                    case 'link':
+                        insertMarkdown('[', '](url)', '链接文字');
+                        break;
+                    case 'image':
+                        insertMarkdown('![', '](图片地址)', '图片描述');
+                        break;
+                    case 'code':
+                        insertMarkdown('`', '`', '代码');
+                        break;
+                }
+            });
+
+            // 其他事件
             elEditorTextarea.addEventListener('input', () => {
                 currentContent = elEditorTextarea.value;
                 isDirty = true;
                 updateWordCount();
                 scheduleAutoSave();
-                if (currentView === 'split') {
-                    updatePreview();
-                }
+                if (currentView === 'split') updatePreview();
             });
-
             elEditorTextarea.addEventListener('keydown', (e) => {
-                // Ctrl+S 手动保存
                 if ((e.ctrlKey || e.metaKey) && e.key === 's') {
                     e.preventDefault();
-                    saveCurrentDiary().then(() => {
-                        showToast('已手动保存 💾', 'success');
-                    });
+                    saveCurrentDiary().then(() => showToast('已手动保存 💾', 'success'));
                 }
-                // Tab键插入缩进
                 if (e.key === 'Tab') {
                     e.preventDefault();
-                    const textarea = elEditorTextarea;
-                    const start = textarea.selectionStart;
-                    const end = textarea.selectionEnd;
-                    const before = textarea.value.substring(0, start);
-                    const after = textarea.value.substring(end);
+                    const ta = elEditorTextarea;
+                    const start = ta.selectionStart;
                     if (!e.shiftKey) {
-                        textarea.value = before + '    ' + after;
-                        textarea.selectionStart = textarea.selectionEnd = start + 4;
+                        ta.setRangeText('    ', start, ta.selectionEnd, 'end');
+                        ta.selectionStart = ta.selectionEnd = start + 4;
                     } else {
-                        // Shift+Tab 减少缩进
-                        const lineStart = before.lastIndexOf('\n', start - 1) + 1;
-                        const line = textarea.value.substring(lineStart, start);
+                        const lineStart = ta.value.lastIndexOf('\n', start - 1) + 1;
+                        const line = ta.value.substring(lineStart, start);
                         if (line.startsWith('    ')) {
-                            textarea.value = before.substring(0, lineStart) + line.substring(4) + after;
-                            textarea.selectionStart = textarea.selectionEnd = start - 4;
-                        } else if (line.startsWith('\t')) {
-                            textarea.value = before.substring(0, lineStart) + line.substring(1) + after;
-                            textarea.selectionStart = textarea.selectionEnd = start - 1;
+                            ta.setRangeText('', lineStart, lineStart + 4, 'end');
+                            ta.selectionStart = ta.selectionEnd = start - 4;
                         }
                     }
-                    currentContent = textarea.value;
+                    currentContent = ta.value;
                     isDirty = true;
                     updateWordCount();
                     scheduleAutoSave();
-                    if (currentView === 'split') updatePreview();
                 }
             });
 
             elBtnSelectFolder.addEventListener('click', selectFolder);
-            elFolderPath.addEventListener('click', selectFolder);
+            if (elFolderPath) elFolderPath.addEventListener('click', selectFolder);
             elBtnToggleTheme.addEventListener('click', toggleTheme);
-
-            elBtnGoToday.addEventListener('click', async () => {
-                const today = getTodayDateString();
-                if (currentDate !== today) {
-                    if (isDirty) await saveCurrentDiary();
-                    await loadDiary(today);
-                    updateHeatmap();
-                }
-            });
-
-            elBtnGoToday2.addEventListener('click', async () => {
-                const today = getTodayDateString();
-                if (currentDate !== today) {
-                    if (isDirty) await saveCurrentDiary();
-                    await loadDiary(today);
-                    updateHeatmap();
-                }
-            });
-
-            elBtnPrevDay.addEventListener('click', async () => {
-                const prev = addDays(currentDate, -1);
-                if (isDirty) await saveCurrentDiary();
+            elBtnGoToday.addEventListener('click', async () => { if (currentDate !== getTodayDateString()) { if (
+                        isDirty) await saveCurrentDiary();
+                    await loadDiary(getTodayDateString());
+                    updateHeatmap(); } });
+            elBtnGoToday2.addEventListener('click', async () => { if (currentDate !== getTodayDateString()) { if (
+                        isDirty) await saveCurrentDiary();
+                    await loadDiary(getTodayDateString());
+                    updateHeatmap(); } });
+            elBtnPrevDay.addEventListener('click', async () => { const prev = addDays(currentDate, -1); if (isDirty)
+                    await saveCurrentDiary();
                 await loadDiary(prev);
-                updateHeatmap();
-            });
-
-            elBtnNextDay.addEventListener('click', async () => {
-                const next = addDays(currentDate, 1);
-                const today = getTodayDateString();
-                if (next > today) return;
-                if (isDirty) await saveCurrentDiary();
+                updateHeatmap(); });
+            elBtnNextDay.addEventListener('click', async () => { const next = addDays(currentDate, 1); if (next >
+                    getTodayDateString()) return; if (isDirty) await saveCurrentDiary();
                 await loadDiary(next);
-                updateHeatmap();
-            });
-
-            elViewTabs.addEventListener('click', (e) => {
-                const tab = e.target.closest('.view-tab');
-                if (!tab) return;
-                const view = tab.dataset.view;
-                setView(view);
-            });
-
-            elBtnWelcomeSelect.addEventListener('click', async () => {
-                elWelcomeModal.style.display = 'none';
-                await selectFolder();
-                if (directoryHandle) {
-                    updateHeatmap();
-                    await loadDiary(currentDate);
-                }
-            });
-
+                updateHeatmap(); });
+            elViewTabs.addEventListener('click', (e) => { const tab = e.target.closest('.view-tab'); if (tab) setView(tab
+                    .dataset.view); });
+            elBtnWelcomeSelect.addEventListener('click', async () => { elWelcomeModal.style.display = 'none';
+                await selectFolder(); });
             elBtnWelcomeDemo.addEventListener('click', () => {
                 elWelcomeModal.style.display = 'none';
                 isDemoMode = true;
                 demoStorage = {};
                 diaryDataCache = {};
                 directoryHandle = null;
-                elFolderPath.textContent = '🎮 演示模式（数据存储在浏览器中）';
-                elFolderPath.title = '演示模式 - 数据不会保存到磁盘';
-                setStatus('演示模式已启动');
-                showToast('演示模式启动 - 数据仅存储在浏览器内存中', 'warning');
+                elRecoveryBanner.classList.add('hidden');
+                elFolderPath.textContent = '🎮 演示模式';
+                setStatus('演示模式');
+                showToast('演示模式：数据仅保存在浏览器中', 'warning');
                 updateHeatmap();
                 loadDiary(currentDate);
             });
+            elBtnWelcomeClose.addEventListener('click', () => { elWelcomeModal.style.display = 'none'; });
+            elBtnReconnect.addEventListener('click', selectFolder);
 
-            // 键盘快捷键导航
             document.addEventListener('keydown', (e) => {
-                // 如果焦点在textarea中，不处理导航快捷键（除了Ctrl+S已在上面处理）
-                if (document.activeElement === elEditorTextarea) {
-                    return;
-                }
-                if (e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    elBtnPrevDay.click();
-                } else if (e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    elBtnNextDay.click();
-                } else if (e.key === 't' && !e.ctrlKey && !e.metaKey) {
-                    e.preventDefault();
-                    elBtnGoToday.click();
-                }
+                if (document.activeElement === elEditorTextarea) return;
+                if (e.key === 'ArrowLeft') { e.preventDefault();
+                    elBtnPrevDay.click(); } else if (e.key === 'ArrowRight') { e.preventDefault();
+                    elBtnNextDay.click(); } else if (e.key === 't' && !e.ctrlKey) { e.preventDefault();
+                    elBtnGoToday.click(); }
             });
 
-            // 热力图容器上的鼠标离开事件
-            elHeatmapContainer.addEventListener('mouseleave', hideTooltip);
+            window.addEventListener('beforeunload', async () => { if (isDirty && (directoryHandle || isDemoMode))
+                await saveCurrentDiary(); });
+            setInterval(async () => { if (isDirty && (directoryHandle || isDemoMode)) await saveCurrentDiary(); },
+            30000);
 
-            // 页面关闭前保存
-            window.addEventListener('beforeunload', async () => {
-                if (isDirty && (directoryHandle || isDemoMode)) {
-                    try {
-                        await saveCurrentDiary();
-                    } catch (err) {
-                        // 静默处理
-                    }
-                }
-            });
-
-            // 定期自动保存（额外保障）
-            setInterval(async () => {
-                if (isDirty && (directoryHandle || isDemoMode)) {
-                    await saveCurrentDiary();
-                }
-            }, 30000); // 每30秒检查一次
-
-            // ==================== 初始化 ====================
+            // 初始化：智能恢复或弹窗
             async function init() {
                 applyTheme();
                 setView('edit');
-                updateHeatmap();
-                updateNavButtons();
-
-                // 尝试从IndexedDB恢复目录句柄
                 const savedHandle = await loadDirectoryHandleFromDB();
                 if (savedHandle) {
-                    directoryHandle = savedHandle;
-                    isDemoMode = false;
-                    elFolderPath.textContent = '📁 ' + savedHandle.name;
-                    elFolderPath.title = '点击更改文件夹 - 当前: ' + savedHandle.name;
-                    elWelcomeModal.style.display = 'none';
-                    setStatus('已恢复文件夹连接');
-                    await scanDiaryFiles();
-                    await loadDiary(currentDate);
-                    updateHeatmap();
-                    showToast('已自动连接文件夹: ' + savedHandle.name, 'success');
+                    const permOk = await verifyPermission(savedHandle);
+                    if (permOk) {
+                        directoryHandle = savedHandle;
+                        isDemoMode = false;
+                        elFolderPath.textContent = '📁 ' + savedHandle.name;
+                        elRecoveryBanner.classList.add('hidden');
+                        elWelcomeModal.style.display = 'none';
+                        setStatus('已恢复文件夹连接');
+                        await scanDiaryFiles();
+                        await loadDiary(currentDate);
+                        updateHeatmap();
+                        showToast('已自动连接文件夹: ' + savedHandle.name, 'success');
+                    } else {
+                        // 权限丢失，显示恢复提示条
+                        elWelcomeModal.style.display = 'none';
+                        elRecoveryBanner.classList.remove('hidden');
+                        elFolderPath.textContent = '⚠️ 需要重新授权';
+                        setStatus('文件夹权限已过期');
+                        updateHeatmap();
+                        loadDiary(currentDate);
+                    }
                 } else {
-                    // 显示欢迎弹窗
+                    // 无保存记录，显示欢迎弹窗
                     elWelcomeModal.style.display = 'flex';
+                    elModalTitle.textContent = '📔 欢迎使用花漾日记';
+                    elModalMessage.textContent = '请选择一个文件夹来存放日记文件（每篇日记为一个 .md 文件）。';
+                    elBtnWelcomeClose.style.display = 'none';
                     updateHeatmap();
-                    // 预加载今天（演示模式占位）
-                    currentContent = '';
-                    elEditorTextarea.value = '';
-                    elDateTitle.textContent = formatDateDisplay(currentDate);
-                    updateWordCount();
-                    updatePreview();
-                    updateNavButtons();
+                    loadDiary(currentDate);
                 }
             }
 
             init().catch(err => {
-                console.error('初始化失败:', err);
+                console.error(err);
                 elWelcomeModal.style.display = 'flex';
-                setStatus('初始化失败', 'error');
             });
-
-            console.log('📔 Markdown 日记应用已就绪');
-            console.log('  - 支持 File System Access API (Chrome/Edge)');
-            console.log('  - 热力图显示过去一年的写作情况');
-            console.log('  - 自动保存，Ctrl+S 手动保存');
-            console.log('  - 文件名格式: YYYY-MM-DD.md');
-            console.log('  - 点击热力图方块切换日期');
-            console.log('  - 左右箭头键导航日期');
-            console.log('  - 按 T 键回到今天');
         })();
     </script>
 </body>
