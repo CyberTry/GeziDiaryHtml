@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📔 Markdown 日记 · 彩色版</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
+    </script>
+    <style>
+        :root {
+            /* 明亮扁平色彩 */
+            --bg: #f0f4f8;
+            --surface: #ffffff;
+            --surface-alt: #f8fafc;
+            --surface-hover: #eef2f6;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent: #4f46e5;
+            --accent-light: #e0e7ff;
+            --accent-hover: #4338ca;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-xs: 6px;
+            --transition: 0.2s ease;
+            --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', 'PingFang SC',
+                'Microsoft YaHei', sans-serif;
+
+            /* 热力图颜色 (优化对比度) */
+            --heat-empty: #edf2f7;
+            --heat-l1: #c6f6d5;
+            --heat-l2: #68d391;
+            --heat-l3: #38a169;
+            --heat-l4: #22543d;
+        }
+
+        .dark {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-alt: #334155;
+            --surface-hover: #475569;
+            --border: #475569;
+            --border-light: #334155;
+            --text: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent: #818cf8;
+            --accent-light: #312e81;
+            --accent-hover: #6366f1;
+            --danger: #f87171;
+            --danger-hover: #ef4444;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.5);
+            --heat-empty: #1e293b;
+            --heat-l1: #064e3b;
+            --heat-l2: #047857;
+            --heat-l3: #10b981;
+            --heat-l4: #6ee7b7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background var(--transition), color var(--transition);
+            user-select: none;
+            -webkit-user-select: none;
+            letter-spacing: -0.01em;
+        }
+
+        /* ========== 顶部工具栏 ========== */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 24px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            z-index: 10;
+            box-shadow: var(--shadow-sm);
+            min-height: 56px;
+            flex-wrap: wrap;
+            transition: background var(--transition);
+        }
+        .toolbar .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        .toolbar .logo svg {
+            width: 26px;
+            height: 26px;
+            stroke: var(--accent);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: var(--font-sans);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            border: none;
+            background: var(--surface-alt);
+            color: var(--text);
+            transition: all var(--transition);
+            white-space: nowrap;
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            letter-spacing: -0.01em;
+        }
+        .btn:hover {
+            background: var(--surface-hover);
+            box-shadow: var(--shadow);
+            transform: translateY(-1px);
+        }
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.05s ease;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 6px 12px -2px rgba(79, 70, 229, 0.35);
+            color: #fff;
+        }
+        .btn-icon {
+            padding: 7px 10px;
+            min-width: 36px;
+            justify-content: center;
+            background: transparent;
+            box-shadow: none;
+            border-radius: var(--radius-xs);
+        }
+        .btn-icon:hover {
+            background: var(--surface-alt);
+            box-shadow: none;
+        }
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            gap: 4px;
+            border-radius: var(--radius-xs);
+        }
+        .folder-path {
+            flex: 1;
+            min-width: 120px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 6px 12px;
+            background: var(--surface-alt);
+            border-radius: var(--radius-xs);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            max-width: 360px;
+            transition: border-color var(--transition);
+        }
+        .folder-path:hover {
+            border-color: var(--accent);
+        }
+        .toolbar .spacer {
+            flex: 1;
+            min-width: 8px;
+        }
+
+        /* ========== 恢复提示条 ========== */
+        .recovery-banner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 24px;
+            background: #fff7ed;
+            border-bottom: 1px solid #fed7aa;
+            color: #9a3412;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+            animation: slideDown 0.3s ease;
+        }
+        .recovery-banner.hidden {
+            display: none;
+        }
+        .recovery-banner .btn {
+            background: #ffedd5;
+            color: #9a3412;
+            border: 1px solid #fdba74;
+            box-shadow: none;
+            font-size: 0.8rem;
+            padding: 4px 12px;
+        }
+        .recovery-banner .btn:hover {
+            background: #fed7aa;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== 主内容区 ========== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        /* ========== 热力图容器 ========== */
+        .heatmap-container {
+            padding: 16px 24px 12px 24px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: background var(--transition);
+        }
+        .heatmap-wrapper {
+            display: flex;
+            gap: 0;
+            align-items: flex-start;
+            position: relative;
+        }
+        .heatmap-months {
+            display: flex;
+            gap: 0;
+            margin-left: 34px;
+            margin-bottom: 2px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            height: 16px;
+            position: relative;
+            width: 100%;
+        }
+        .heatmap-months span {
+            position: absolute;
+            white-space: nowrap;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+        .heatmap-grid-wrapper {
+            display: flex;
+            gap: 3px;
+            align-items: flex-start;
+        }
+        .heatmap-day-labels {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-right: 6px;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            padding-top: 2px;
+            line-height: 1;
+        }
+        .heatmap-day-labels span {
+            height: 13px;
+            display: flex;
+            align-items: center;
+        }
+        .heatmap-grid {
+            display: flex;
+            gap: 3px;
+        }
+        .heatmap-week {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .heatmap-cell {
+            width: 13px;
+            height: 13px;
+            border-radius: 3px;
+            background: var(--heat-empty);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            outline: none;
+            border: 1px solid transparent;
+        }
+        .heatmap-cell:hover {
+            transform: scale(1.4);
+            z-index: 5;
+            box-shadow: 0 0 0 3px var(--accent);
+            border-color: var(--surface);
+            border-radius: 3px;
+        }
+        .heatmap-cell:active {
+            transform: scale(1.15);
+            transition: transform 0.05s ease;
+        }
+        .heatmap-cell.today {
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 0 1px var(--accent);
+            border-radius: 3px;
+            z-index: 3;
+        }
+        .heatmap-cell.selected {
+            border: 2px solid var(--danger);
+            box-shadow: 0 0 0 1px var(--danger);
+            border-radius: 3px;
+            z-index: 4;
+            animation: pulse-border 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-border {
+            0%,
+            100% {
+                box-shadow: 0 0 0 1px var(--danger);
+            }
+            50% {
+                box-shadow: 0 0 0 4px transparent;
+            }
+        }
+        .heatmap-cell.level-1 {
+            background: var(--heat-l1);
+        }
+        .heatmap-cell.level-2 {
+            background: var(--heat-l2);
+        }
+        .heatmap-cell.level-3 {
+            background: var(--heat-l3);
+        }
+        .heatmap-cell.level-4 {
+            background: var(--heat-l4);
+        }
+        .heatmap-legend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .heatmap-legend .cell {
+            width: 11px;
+            height: 11px;
+            border-radius: 2px;
+            background: var(--heat-empty);
+        }
+        .heatmap-legend .cell.l1 {
+            background: var(--heat-l1);
+        }
+        .heatmap-legend .cell.l2 {
+            background: var(--heat-l2);
+        }
+        .heatmap-legend .cell.l3 {
+            background: var(--heat-l3);
+        }
+        .heatmap-legend .cell.l4 {
+            background: var(--heat-l4);
+        }
+
+        .heatmap-tooltip {
+            position: fixed;
+            pointer-events: none;
+            background: #1e293b;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            white-space: nowrap;
+            z-index: 1000;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.1s ease, transform 0.1s ease;
+            letter-spacing: 0.2px;
+        }
+        .heatmap-tooltip.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========== 编辑器区域 ========== */
+        .editor-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+            background: var(--surface);
+            margin: 12px 12px 0 12px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: background var(--transition), border-color var(--transition);
+        }
+        .editor-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: var(--surface-alt);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+        .editor-header .date-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .editor-header .date-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text);
+            white-space: nowrap;
+            background: var(--surface);
+            padding: 4px 12px;
+            border-radius: var(--radius-xs);
+            border: 1px solid var(--border);
+        }
+        .view-tabs {
+            display: flex;
+            gap: 2px;
+            background: var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 2px;
+        }
+        .view-tab {
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: var(--radius-xs);
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: var(--font-sans);
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .view-tab.active {
+            background: var(--surface);
+            color: var(--accent);
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+        .view-tab:hover:not(.active) {
+            color: var(--text);
+            background: rgba(148, 163, 184, 0.1);
+        }
+        .editor-header .word-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            margin-left: auto;
+            background: var(--surface);
+            padding: 4px 10px;
+            border-radius: var(--radius-xs);
+            border: 1px solid var(--border);
+        }
+        .editor-header .word-count strong {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Markdown 快捷工具栏 */
+        .md-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2px;
+            padding: 6px 12px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border-light);
+            flex-shrink: 0;
+        }
+        .md-btn {
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            font-family: var(--font-sans);
+            border-radius: var(--radius-xs);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            white-space: nowrap;
+            letter-spacing: -0.01em;
+        }
+        .md-btn:hover {
+            background: var(--accent-light);
+            color: var(--accent);
+            box-shadow: var(--shadow-sm);
+        }
+        .md-btn:active {
+            transform: scale(0.96);
+        }
+        .md-btn.separator {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+            padding: 0;
+            margin: 0 4px;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .editor-body {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+            overflow: hidden;
+            border-radius: 0 0 var(--radius) var(--radius);
+        }
+        .editor-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            min-height: 0;
+        }
+        .editor-pane.hidden {
+            display: none;
+        }
+        .editor-pane.split-left {
+            border-right: 1px solid var(--border-light);
+        }
+        .editor-textarea {
+            width: 100%;
+            height: 100%;
+            border: none;
+            resize: none;
+            padding: 16px 20px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            background: var(--surface);
+            color: var(--text);
+            outline: none;
+            tab-size: 4;
+            overflow-y: auto;
+            user-select: text;
+            -webkit-user-select: text;
+            border-radius: 0 0 var(--radius) var(--radius);
+        }
+        .editor-textarea::placeholder {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .preview-pane {
+            padding: 16px 20px;
+            overflow-y: auto;
+            background: var(--surface);
+            user-select: text;
+            -webkit-user-select: text;
+            border-radius: 0 0 var(--radius) var(--radius);
+        }
+        .preview-pane h1,
+        .preview-pane h2,
+        .preview-pane h3 {
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .preview-pane h1 {
+            font-size: 1.5em;
+            border-bottom: 2px solid var(--border-light);
+            padding-bottom: 0.3em;
+        }
+        .preview-pane h2 {
+            font-size: 1.3em;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 0.2em;
+        }
+        .preview-pane p {
+            margin-bottom: 0.8em;
+            line-height: 1.7;
+        }
+        .preview-pane blockquote {
+            border-left: 4px solid var(--accent);
+            padding: 6px 14px;
+            margin: 0.8em 0;
+            background: var(--surface-alt);
+            border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+            color: var(--text-secondary);
+        }
+        .preview-pane code {
+            background: var(--surface-alt);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+        }
+        .preview-pane pre {
+            background: var(--surface-alt);
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            overflow-x: auto;
+            margin: 0.8em 0;
+        }
+        .preview-pane pre code {
+            background: none;
+            padding: 0;
+        }
+        .preview-pane table {
+            border-collapse: collapse;
+            margin: 0.8em 0;
+            width: 100%;
+        }
+        .preview-pane th,
+        .preview-pane td {
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+        }
+        .preview-pane th {
+            background: var(--surface-alt);
+        }
+        .preview-pane img {
+            max-width: 100%;
+            border-radius: var(--radius-sm);
+        }
+        .preview-pane a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ========== 底部状态栏 ========== */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 6px 24px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            font-size: 0.73rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            min-height: 28px;
+            transition: background var(--transition);
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            flex-shrink: 0;
+        }
+        .status-dot.saving {
+            background: var(--warning);
+            animation: blink 0.6s ease-in-out infinite;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        /* ========== 弹窗 ========== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 28px;
+            box-shadow: var(--shadow-lg);
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .modal h2 {
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            color: var(--text);
+        }
+        .modal p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+        .modal .btn {
+            margin: 4px;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            background: #1e293b;
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.25s ease, slideOut 0.25s ease 2.5s forwards;
+            max-width: 360px;
+            pointer-events: none;
+        }
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+        .toast.warning {
+            border-left: 4px solid var(--warning);
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .toolbar {
+                padding: 8px 12px;
+                gap: 6px;
+            }
+            .folder-path {
+                max-width: 150px;
+                font-size: 0.7rem;
+            }
+            .heatmap-container {
+                padding: 10px 8px;
+                overflow-x: auto;
+                align-items: flex-start;
+            }
+            .heatmap-cell {
+                width: 10px;
+                height: 10px;
+            }
+            .editor-area {
+                margin: 8px 8px 0 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部工具栏 -->
+    <div class="toolbar">
+        <span class="logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                <line x1="8" y1="7" x2="16" y2="7"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+            花漾日记
+        </span>
+        <span class="spacer"></span>
+        <span class="folder-path" id="folderPath" title="点击更改日记文件夹">📁 未连接文件夹</span>
+        <button class="btn btn-primary" id="btnSelectFolder" title="选择或更改日记文件夹">
+            📂 选择文件夹
+        </button>
+        <button class="btn btn-icon" id="btnToggleTheme" title="切换暗色模式">🌓</button>
+        <button class="btn btn-icon" id="btnGoToday" title="回到今天">📅</button>
+    </div>
+
+    <!-- 恢复提示条 -->
+    <div class="recovery-banner hidden" id="recoveryBanner">
+        <span>⚠️ 文件夹连接已失效，请重新授权以访问日记。</span>
+        <button class="btn" id="btnReconnect">重新连接</button>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="main-content">
+        <!-- 热力图 -->
+        <div class="heatmap-container" id="heatmapContainer">
+            <div class="heatmap-months" id="heatmapMonths"></div>
+            <div class="heatmap-wrapper">
+                <div class="heatmap-day-labels" id="heatmapDayLabels">
+                    <span>日</span><span></span><span>二</span><span></span><span>四</span><span></span><span>六</span>
+                </div>
+                <div class="heatmap-grid" id="heatmapGrid"></div>
+            </div>
+            <div class="heatmap-legend">
+                少 <span class="cell"></span><span class="cell l1"></span><span class="cell l2"></span><span class="cell l3"></span><span class="cell l4"></span> 多
+            </div>
+        </div>
+
+        <!-- 编辑器区域 -->
+        <div class="editor-area">
+            <div class="editor-header">
+                <div class="date-nav">
+                    <button class="btn btn-sm btn-icon" id="btnPrevDay" title="前一天">◀</button>
+                    <span class="date-title" id="dateTitle">2026年05月03日</span>
+                    <button class="btn btn-sm btn-icon" id="btnNextDay" title="后一天">▶</button>
+                    <button class="btn btn-sm" id="btnGoToday2">今天</button>
+                </div>
+                <div class="view-tabs" id="viewTabs">
+                    <button class="view-tab active" data-view="edit">✏️ 编辑</button>
+                    <button class="view-tab" data-view="split">📑 分屏</button>
+                    <button class="view-tab" data-view="preview">👁 预览</button>
+                </div>
+                <span class="word-count" id="wordCount">字数 <strong>0</strong></span>
+            </div>
+            <!-- Markdown 快捷工具栏 -->
+            <div class="md-toolbar" id="mdToolbar">
+                <button class="md-btn" data-action="bold" title="加粗 (Ctrl+B)"><b>B</b></button>
+                <button class="md-btn" data-action="italic" title="斜体 (Ctrl+I)"><i>I</i></button>
+                <button class="md-btn" data-action="strikethrough" title="删除线"><s>S</s></button>
+                <span class="md-btn separator"></span>
+                <button class="md-btn" data-action="h2" title="二级标题">H2</button>
+                <button class="md-btn" data-action="h3" title="三级标题">H3</button>
+                <span class="md-btn separator"></span>
+                <button class="md-btn" data-action="ul" title="无序列表">• 列表</button>
+                <button class="md-btn" data-action="ol" title="有序列表">1. 列表</button>
+                <button class="md-btn" data-action="quote" title="引用">❝ 引用</button>
+                <span class="md-btn separator"></span>
+                <button class="md-btn" data-action="link" title="插入链接">🔗 链接</button>
+                <button class="md-btn" data-action="image" title="插入图片">🖼️ 图片</button>
+                <button class="md-btn" data-action="code" title="行内代码">&lt;/&gt; 代码</button>
+            </div>
+            <div class="editor-body" id="editorBody">
+                <div class="editor-pane split-left" id="editPane">
+                    <textarea class="editor-textarea" id="editorTextarea"
+                    placeholder="今天有什么新鲜事？用 Markdown 记录吧..."></textarea>
+                </div>
+                <div class="editor-pane preview-pane hidden" id="previewPane"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部状态栏 -->
+    <div class="status-bar">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">未连接文件夹</span>
+        <span style="margin-left:auto;">Ctrl+S 保存 · 箭头键切换日期</span>
+    </div>
+
+    <!-- 热力图提示框 -->
+    <div class="heatmap-tooltip" id="heatmapTooltip"></div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- 弹窗：首次使用或恢复失败 -->
+    <div class="modal-overlay" id="welcomeModal">
+        <div class="modal">
+            <h2 id="modalTitle">📔 欢迎使用花漾日记</h2>
+            <p id="modalMessage">请选择一个文件夹来存放日记文件（每篇日记为一个 .md 文件）。</p>
+            <p style="font-size:0.75rem;color:var(--text-muted);">💡 推荐创建专用文件夹，如“我的日记”</p>
+            <button class="btn btn-primary" id="btnWelcomeSelect">📂 选择文件夹</button>
+            <button class="btn" id="btnWelcomeDemo">🎮 体验演示</button>
+            <button class="btn" id="btnWelcomeClose" style="display:none;">稍后设置</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const FILE_EXT = '.md';
+            const DATE_FORMAT_REGEX = /^(\d{4})-(\d{2})-(\d{2})\.md$/;
+            const AUTO_SAVE_DELAY = 1500;
+            const DB_NAME = 'markdown-diary-v2';
+            const DB_STORE = 'handles';
+            const DB_KEY = 'directoryHandle';
+
+            // DOM 元素
+            const $ = (sel) => document.querySelector(sel);
+            const elFolderPath = $('#folderPath');
+            const elBtnSelectFolder = $('#btnSelectFolder');
+            const elBtnToggleTheme = $('#btnToggleTheme');
+            const elBtnGoToday = $('#btnGoToday');
+            const elBtnGoToday2 = $('#btnGoToday2');
+            const elBtnPrevDay = $('#btnPrevDay');
+            const elBtnNextDay = $('#btnNextDay');
+            const elDateTitle = $('#dateTitle');
+            const elWordCount = $('#wordCount');
+            const elEditorTextarea = $('#editorTextarea');
+            const elPreviewPane = $('#previewPane');
+            const elEditPane = $('#editPane');
+            const elEditorBody = $('#editorBody');
+            const elViewTabs = $('#viewTabs');
+            const elHeatmapGrid = $('#heatmapGrid');
+            const elHeatmapMonths = $('#heatmapMonths');
+            const elHeatmapDayLabels = $('#heatmapDayLabels');
+            const elHeatmapTooltip = $('#heatmapTooltip');
+            const elStatusDot = $('#statusDot');
+            const elStatusText = $('#statusText');
+            const elToastContainer = $('#toastContainer');
+            const elWelcomeModal = $('#welcomeModal');
+            const elModalTitle = $('#modalTitle');
+            const elModalMessage = $('#modalMessage');
+            const elBtnWelcomeSelect = $('#btnWelcomeSelect');
+            const elBtnWelcomeDemo = $('#btnWelcomeDemo');
+            const elBtnWelcomeClose = $('#btnWelcomeClose');
+            const elRecoveryBanner = $('#recoveryBanner');
+            const elBtnReconnect = $('#btnReconnect');
+            const elMdToolbar = $('#mdToolbar');
+
+            // 状态变量
+            let directoryHandle = null;
+            let currentDate = getTodayDateString();
+            let currentContent = '';
+            let isDirty = false;
+            let saveTimeout = null;
+            let diaryDataCache = {};
+            let currentView = 'edit';
+            let isDemoMode = false;
+            let demoStorage = {};
+
+            function getTodayDateString() {
+                const now = new Date();
+                const y = now.getFullYear();
+                const m = String(now.getMonth() + 1).padStart(2, '0');
+                const d = String(now.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
+            }
+
+            function dateStringToDate(str) {
+                const [y, m, d] = str.split('-').map(Number);
+                return new Date(y, m - 1, d);
+            }
+
+            function formatDateDisplay(str) {
+                const [y, m, d] = str.split('-').map(Number);
+                return `${y}年${String(m).padStart(2,'0')}月${String(d).padStart(2,'0')}日`;
+            }
+
+            function addDays(dateStr, days) {
+                const d = dateStringToDate(dateStr);
+                d.setDate(d.getDate() + days);
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${y}-${m}-${day}`;
+            }
+
+            function countChars(text) {
+                return text ? text.replace(/\s/g, '').length : 0;
+            }
+
+            function getCharLevel(count) {
+                if (count === 0) return 0;
+                if (count <= 200) return 1;
+                if (count <= 500) return 2;
+                if (count <= 1000) return 3;
+                return 4;
+            }
+
+            function showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.textContent = message;
+                elToastContainer.appendChild(toast);
+                setTimeout(() => {
+                    if (toast.parentNode) toast.remove();
+                }, 3000);
+            }
+
+            function setStatus(text, type = 'normal') {
+                elStatusText.textContent = text;
+                elStatusDot.className = 'status-dot';
+                if (type === 'saving') elStatusDot.classList.add('saving');
+            }
+
+            // 主题
+            function applyTheme() {
+                const saved = localStorage.getItem('diary-theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.body.classList.toggle('dark', saved ? saved === 'dark' : prefersDark);
+            }
+            applyTheme();
+
+            function toggleTheme() {
+                const isDark = document.body.classList.toggle('dark');
+                localStorage.setItem('diary-theme', isDark ? 'dark' : 'light');
+                showToast(isDark ? '沉浸暗色模式 🌙' : '明亮模式 ☀️');
+            }
+
+            // IndexedDB 持久化
+            function openDB() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(DB_NAME, 1);
+                    request.onupgradeneeded = (e) => {
+                        if (!e.target.result.objectStoreNames.contains(DB_STORE)) {
+                            e.target.result.createObjectStore(DB_STORE);
+                        }
+                    };
+                    request.onsuccess = (e) => resolve(e.target.result);
+                    request.onerror = (e) => reject(e.target.error);
+                });
+            }
+
+            async function saveDirectoryHandleToDB(handle) {
+                try {
+                    const db = await openDB();
+                    const tx = db.transaction(DB_STORE, 'readwrite');
+                    tx.objectStore(DB_STORE).put(handle, DB_KEY);
+                    await new Promise(r => { tx.oncomplete = r;
+                        tx.onerror = r; });
+                    db.close();
+                } catch (err) {
+                    console.warn('保存句柄失败:', err);
+                }
+            }
+
+            async function loadDirectoryHandleFromDB() {
+                try {
+                    const db = await openDB();
+                    const handle = await new Promise((res, rej) => {
+                        const req = db.transaction(DB_STORE).objectStore(DB_STORE).get(DB_KEY);
+                        req.onsuccess = () => res(req.result);
+                        req.onerror = rej;
+                    });
+                    db.close();
+                    return handle || null;
+                } catch (err) {
+                    return null;
+                }
+            }
+
+            async function verifyPermission(handle, options = { mode: 'readwrite' }) {
+                try {
+                    return (await handle.queryPermission(options)) === 'granted' ||
+                        (await handle.requestPermission(options)) === 'granted';
+                } catch {
+                    return false;
+                }
+            }
+
+            // 文件夹选择与恢复
+            async function selectFolder() {
+                try {
+                    const handle = await window.showDirectoryPicker({ mode: 'readwrite', startIn: 'documents' });
+                    directoryHandle = handle;
+                    isDemoMode = false;
+                    await saveDirectoryHandleToDB(handle);
+                    elFolderPath.textContent = '📁 ' + handle.name;
+                    elFolderPath.title = handle.name;
+                    elRecoveryBanner.classList.add('hidden');
+                    setStatus('文件夹已连接');
+                    await scanDiaryFiles();
+                    await loadDiary(currentDate);
+                    updateHeatmap();
+                    showToast('已连接文件夹: ' + handle.name, 'success');
+                } catch (err) {
+                    if (err.name !== 'AbortError') showToast('选择失败: ' + err.message, 'error');
+                }
+            }
+
+            async function scanDiaryFiles() {
+                diaryDataCache = {};
+                if (isDemoMode) {
+                    for (const [key, val] of Object.entries(demoStorage)) {
+                        const match = key.match(DATE_FORMAT_REGEX);
+                        if (match) diaryDataCache[`${match[1]}-${match[2]}-${match[3]}`] = { charCount: countChars(
+                                val), loaded: false };
+                    }
+                    return;
+                }
+                if (!directoryHandle) return;
+                try {
+                    const entries = [];
+                    for await (const entry of directoryHandle.values()) {
+                        if (entry.kind === 'file' && entry.name.endsWith(FILE_EXT)) {
+                            const match = entry.name.match(DATE_FORMAT_REGEX);
+                            if (match) entries.push({ dateStr: `${match[1]}-${match[2]}-${match[3]}`, entry });
+                        }
+                    }
+                    await Promise.all(entries.map(async ({ dateStr, entry }) => {
+                        try {
+                            const text = await (await entry.getFile()).text();
+                            diaryDataCache[dateStr] = { charCount: countChars(text), loaded: false };
+                        } catch {
+                            diaryDataCache[dateStr] = { charCount: 0, loaded: false };
+                        }
+                    }));
+                    setStatus(`已扫描 ${entries.length} 篇日记`);
+                } catch (err) {
+                    console.error('扫描失败:', err);
+                }
+            }
+
+            async function readFile(dateStr) {
+                const filename = dateStr + FILE_EXT;
+                if (isDemoMode) return demoStorage[filename] || '';
+                if (!directoryHandle) return '';
+                try {
+                    const file = await (await directoryHandle.getFileHandle(filename)).getFile();
+                    return await file.text();
+                } catch (err) {
+                    return '';
+                }
+            }
+
+            async function writeFile(dateStr, content) {
+                const filename = dateStr + FILE_EXT;
+                if (isDemoMode) {
+                    demoStorage[filename] = content;
+                    diaryDataCache[dateStr] = { charCount: countChars(content), loaded: true };
+                    return;
+                }
+                if (!directoryHandle) throw new Error('未连接文件夹');
+                const fileHandle = await directoryHandle.getFileHandle(filename, { create: true });
+                const writable = await fileHandle.createWritable();
+                await writable.write(content);
+                await writable.close();
+                diaryDataCache[dateStr] = { charCount: countChars(content), loaded: true };
+            }
+
+            async function loadDiary(dateStr) {
+                try {
+                    const content = await readFile(dateStr);
+                    currentDate = dateStr;
+                    currentContent = content;
+                    isDirty = false;
+                    elEditorTextarea.value = content;
+                    elDateTitle.textContent = formatDateDisplay(dateStr);
+                    updateWordCount();
+                    updatePreview();
+                    updateHeatmapSelection();
+                    updateNavButtons();
+                    elEditorTextarea.scrollTop = 0;
+                    elPreviewPane.scrollTop = 0;
+                    setStatus('已加载 ' + formatDateDisplay(dateStr));
+                } catch (err) {
+                    setStatus('加载失败', 'error');
+                }
+            }
+
+            async function saveCurrentDiary() {
+                if (!isDirty) return;
+                if (!directoryHandle && !isDemoMode) {
+                    setStatus('未连接文件夹，无法保存', 'error');
+                    return;
+                }
+                try {
+                    setStatus('正在保存...', 'saving');
+                    await writeFile(currentDate, currentContent);
+                    isDirty = false;
+                    setStatus('已保存 ' + formatDateDisplay(currentDate));
+                    updateWordCount();
+                    updateHeatmap();
+                } catch (err) {
+                    setStatus('保存失败', 'error');
+                    showToast('保存失败: ' + err.message, 'error');
+                }
+            }
+
+            function scheduleAutoSave() {
+                if (saveTimeout) clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(saveCurrentDiary, AUTO_SAVE_DELAY);
+            }
+
+            function updateWordCount() {
+                const cnt = countChars(currentContent);
+                elWordCount.innerHTML = '字数 <strong>' + cnt.toLocaleString() + '</strong>';
+            }
+
+            function updatePreview() {
+                try {
+                    elPreviewPane.innerHTML = marked.parse(currentContent || '*（暂无内容）*');
+                } catch {
+                    elPreviewPane.innerHTML = '<p style="color:var(--danger)">渲染失败</p>';
+                }
+            }
+
+            function updateNavButtons() {
+                elBtnNextDay.disabled = currentDate >= getTodayDateString();
+            }
+
+            function setView(view) {
+                currentView = view;
+                elViewTabs.querySelectorAll('.view-tab').forEach(t => t.classList.toggle('active', t.dataset.view ===
+                    view));
+                if (view === 'edit') {
+                    elEditPane.classList.remove('hidden', 'split-left');
+                    elPreviewPane.classList.add('hidden');
+                } else if (view === 'preview') {
+                    elEditPane.classList.add('hidden');
+                    elPreviewPane.classList.remove('hidden');
+                    updatePreview();
+                } else {
+                    elEditPane.classList.remove('hidden');
+                    elEditPane.classList.add('split-left');
+                    elPreviewPane.classList.remove('hidden');
+                    updatePreview();
+                }
+            }
+
+            // 热力图
+            function getHeatmapDateRange() {
+                const today = dateStringToDate(getTodayDateString());
+                const start = new Date(today);
+                start.setDate(start.getDate() - 364);
+                while (start.getDay() !== 0) start.setDate(start.getDate() - 1);
+                const end = new Date(today);
+                while (end.getDay() !== 6) end.setDate(end.getDate() + 1);
+                return { start, end };
+            }
+
+            function dateToStr(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+
+            function updateHeatmap() {
+                const { start, end } = getHeatmapDateRange();
+                const todayStr = getTodayDateString();
+                const weeks = [];
+                const cur = new Date(start);
+                while (cur.getTime() <= end.getTime()) {
+                    const week = [];
+                    for (let d = 0; d < 7; d++) {
+                        const ds = dateToStr(cur);
+                        week.push({ dateStr: ds, charCount: diaryDataCache[ds]?.charCount || 0, isToday: ds === todayStr,
+                            isFuture: cur.getTime() > Date.now() });
+                        cur.setDate(cur.getDate() + 1);
+                        if (cur.getTime() > end.getTime() && d === 6) break;
+                    }
+                    if (week.length) weeks.push(week);
+                }
+                renderMonthLabels(weeks);
+                elHeatmapGrid.innerHTML = '';
+                weeks.forEach(week => {
+                    const wDiv = document.createElement('div');
+                    wDiv.className = 'heatmap-week';
+                    week.forEach(day => {
+                        const cell = document.createElement('div');
+                        cell.className = 'heatmap-cell';
+                        cell.dataset.date = day.dateStr;
+                        if (day.isToday) cell.classList.add('today');
+                        if (day.dateStr === currentDate) cell.classList.add('selected');
+                        if (day.isFuture) {
+                            cell.style.background = 'transparent';
+                            cell.style.pointerEvents = 'none';
+                        } else {
+                            const lvl = getCharLevel(day.charCount);
+                            if (lvl) cell.classList.add('level-' + lvl);
+                            cell.addEventListener('click', () => { if (day.dateStr !== currentDate || isDirty)
+                                    handleDateChange(day.dateStr); });
+                            cell.addEventListener('mouseenter', (e) => {
+                                elHeatmapTooltip.textContent =
+                                    `${formatDateDisplay(day.dateStr)} — ${day.charCount.toLocaleString()} 字符`;
+                                const rect = e.target.getBoundingClientRect();
+                                elHeatmapTooltip.style.left = rect.left + rect.width / 2 + 'px';
+                                elHeatmapTooltip.style.top = rect.top - 32 + 'px';
+                                elHeatmapTooltip.classList.add('show');
+                            });
+                            cell.addEventListener('mouseleave', () => elHeatmapTooltip.classList.remove(
+                            'show'));
+                        }
+                        wDiv.appendChild(cell);
+                    });
+                    elHeatmapGrid.appendChild(wDiv);
+                });
+            }
+
+            function renderMonthLabels(weeks) {
+                elHeatmapMonths.innerHTML = '';
+                if (!weeks.length) return;
+                const monthNames = ['', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+                let lastM = -1;
+                weeks.forEach((week, i) => {
+                    const m = parseInt(week[0].dateStr.split('-')[1]);
+                    if (m !== lastM) {
+                        const span = document.createElement('span');
+                        span.textContent = monthNames[m];
+                        span.style.left = (i * 16) + 'px';
+                        elHeatmapMonths.appendChild(span);
+                        lastM = m;
+                    }
+                });
+            }
+
+            function updateHeatmapSelection() {
+                document.querySelectorAll('.heatmap-cell').forEach(c => c.classList.toggle('selected', c.dataset
+                    .date === currentDate));
+            }
+
+            async function handleDateChange(newDate) {
+                if (isDirty) await saveCurrentDiary();
+                await loadDiary(newDate);
+                updateHeatmap();
+            }
+
+            // Markdown 工具栏
+            function insertMarkdown(before, after, placeholder = '') {
+                const ta = elEditorTextarea;
+                const start = ta.selectionStart;
+                const end = ta.selectionEnd;
+                const selected = ta.value.substring(start, end) || placeholder;
+                ta.setRangeText(before + selected + after, start, end, 'select');
+                if (start === end) {
+                    ta.selectionStart = start + before.length;
+                    ta.selectionEnd = start + before.length + selected.length;
+                }
+                ta.focus();
+                currentContent = ta.value;
+                isDirty = true;
+                updateWordCount();
+                scheduleAutoSave();
+                if (currentView === 'split') updatePreview();
+            }
+
+            elMdToolbar.addEventListener('click', (e) => {
+                const btn = e.target.closest('.md-btn');
+                if (!btn || btn.dataset.action === undefined) return;
+                const action = btn.dataset.action;
+                const ta = elEditorTextarea;
+                const start = ta.selectionStart;
+                const end = ta.selectionEnd;
+                const selected = ta.value.substring(start, end);
+                switch (action) {
+                    case 'bold':
+                        insertMarkdown('**', '**', '粗体');
+                        break;
+                    case 'italic':
+                        insertMarkdown('*', '*', '斜体');
+                        break;
+                    case 'strikethrough':
+                        insertMarkdown('~~', '~~', '删除线');
+                        break;
+                    case 'h2':
+                        insertMarkdown('## ', '', '二级标题');
+                        break;
+                    case 'h3':
+                        insertMarkdown('### ', '', '三级标题');
+                        break;
+                    case 'ul':
+                        insertMarkdown('- ', '', '列表项');
+                        break;
+                    case 'ol':
+                        insertMarkdown('1. ', '', '列表项');
+                        break;
+                    case 'quote':
+                        insertMarkdown('> ', '', '引用');
+                        break;
+                    case 'link':
+                        insertMarkdown('[', '](url)', '链接文字');
+                        break;
+                    case 'image':
+                        insertMarkdown('![', '](图片地址)', '图片描述');
+                        break;
+                    case 'code':
+                        insertMarkdown('`', '`', '代码');
+                        break;
+                }
+            });
+
+            // 其他事件
+            elEditorTextarea.addEventListener('input', () => {
+                currentContent = elEditorTextarea.value;
+                isDirty = true;
+                updateWordCount();
+                scheduleAutoSave();
+                if (currentView === 'split') updatePreview();
+            });
+            elEditorTextarea.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    saveCurrentDiary().then(() => showToast('已手动保存 💾', 'success'));
+                }
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    const ta = elEditorTextarea;
+                    const start = ta.selectionStart;
+                    if (!e.shiftKey) {
+                        ta.setRangeText('    ', start, ta.selectionEnd, 'end');
+                        ta.selectionStart = ta.selectionEnd = start + 4;
+                    } else {
+                        const lineStart = ta.value.lastIndexOf('\n', start - 1) + 1;
+                        const line = ta.value.substring(lineStart, start);
+                        if (line.startsWith('    ')) {
+                            ta.setRangeText('', lineStart, lineStart + 4, 'end');
+                            ta.selectionStart = ta.selectionEnd = start - 4;
+                        }
+                    }
+                    currentContent = ta.value;
+                    isDirty = true;
+                    updateWordCount();
+                    scheduleAutoSave();
+                }
+            });
+
+            elBtnSelectFolder.addEventListener('click', selectFolder);
+            if (elFolderPath) elFolderPath.addEventListener('click', selectFolder);
+            elBtnToggleTheme.addEventListener('click', toggleTheme);
+            elBtnGoToday.addEventListener('click', async () => { if (currentDate !== getTodayDateString()) { if (
+                        isDirty) await saveCurrentDiary();
+                    await loadDiary(getTodayDateString());
+                    updateHeatmap(); } });
+            elBtnGoToday2.addEventListener('click', async () => { if (currentDate !== getTodayDateString()) { if (
+                        isDirty) await saveCurrentDiary();
+                    await loadDiary(getTodayDateString());
+                    updateHeatmap(); } });
+            elBtnPrevDay.addEventListener('click', async () => { const prev = addDays(currentDate, -1); if (isDirty)
+                    await saveCurrentDiary();
+                await loadDiary(prev);
+                updateHeatmap(); });
+            elBtnNextDay.addEventListener('click', async () => { const next = addDays(currentDate, 1); if (next >
+                    getTodayDateString()) return; if (isDirty) await saveCurrentDiary();
+                await loadDiary(next);
+                updateHeatmap(); });
+            elViewTabs.addEventListener('click', (e) => { const tab = e.target.closest('.view-tab'); if (tab) setView(tab
+                    .dataset.view); });
+            elBtnWelcomeSelect.addEventListener('click', async () => { elWelcomeModal.style.display = 'none';
+                await selectFolder(); });
+            elBtnWelcomeDemo.addEventListener('click', () => {
+                elWelcomeModal.style.display = 'none';
+                isDemoMode = true;
+                demoStorage = {};
+                diaryDataCache = {};
+                directoryHandle = null;
+                elRecoveryBanner.classList.add('hidden');
+                elFolderPath.textContent = '🎮 演示模式';
+                setStatus('演示模式');
+                showToast('演示模式：数据仅保存在浏览器中', 'warning');
+                updateHeatmap();
+                loadDiary(currentDate);
+            });
+            elBtnWelcomeClose.addEventListener('click', () => { elWelcomeModal.style.display = 'none'; });
+            elBtnReconnect.addEventListener('click', selectFolder);
+
+            document.addEventListener('keydown', (e) => {
+                if (document.activeElement === elEditorTextarea) return;
+                if (e.key === 'ArrowLeft') { e.preventDefault();
+                    elBtnPrevDay.click(); } else if (e.key === 'ArrowRight') { e.preventDefault();
+                    elBtnNextDay.click(); } else if (e.key === 't' && !e.ctrlKey) { e.preventDefault();
+                    elBtnGoToday.click(); }
+            });
+
+            window.addEventListener('beforeunload', async () => { if (isDirty && (directoryHandle || isDemoMode))
+                await saveCurrentDiary(); });
+            setInterval(async () => { if (isDirty && (directoryHandle || isDemoMode)) await saveCurrentDiary(); },
+            30000);
+
+            // 初始化：智能恢复或弹窗
+            async function init() {
+                applyTheme();
+                setView('edit');
+                const savedHandle = await loadDirectoryHandleFromDB();
+                if (savedHandle) {
+                    const permOk = await verifyPermission(savedHandle);
+                    if (permOk) {
+                        directoryHandle = savedHandle;
+                        isDemoMode = false;
+                        elFolderPath.textContent = '📁 ' + savedHandle.name;
+                        elRecoveryBanner.classList.add('hidden');
+                        elWelcomeModal.style.display = 'none';
+                        setStatus('已恢复文件夹连接');
+                        await scanDiaryFiles();
+                        await loadDiary(currentDate);
+                        updateHeatmap();
+                        showToast('已自动连接文件夹: ' + savedHandle.name, 'success');
+                    } else {
+                        // 权限丢失，显示恢复提示条
+                        elWelcomeModal.style.display = 'none';
+                        elRecoveryBanner.classList.remove('hidden');
+                        elFolderPath.textContent = '⚠️ 需要重新授权';
+                        setStatus('文件夹权限已过期');
+                        updateHeatmap();
+                        loadDiary(currentDate);
+                    }
+                } else {
+                    // 无保存记录，显示欢迎弹窗
+                    elWelcomeModal.style.display = 'flex';
+                    elModalTitle.textContent = '📔 欢迎使用花漾日记';
+                    elModalMessage.textContent = '请选择一个文件夹来存放日记文件（每篇日记为一个 .md 文件）。';
+                    elBtnWelcomeClose.style.display = 'none';
+                    updateHeatmap();
+                    loadDiary(currentDate);
+                }
+            }
+
+            init().catch(err => {
+                console.error(err);
+                elWelcomeModal.style.display = 'flex';
+            });
+        })();
+    </script>
+</body>
+</html>
